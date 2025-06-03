@@ -42,6 +42,12 @@ test('new users can register', function () {
 });
 
 test('user cannot register with invalid email', function () {
+    // Mock the turnstile validation
+    $this->mock(\RyanChandler\LaravelCloudflareTurnstile\Rules\Turnstile::class, function ($mock) {
+        $mock->shouldReceive('passes')
+            ->andReturn(true);
+    });
+
     Livewire::test(Register::class)
         ->set('name', 'Test User')
         ->set('email', 'invalid-email')
@@ -53,6 +59,12 @@ test('user cannot register with invalid email', function () {
 });
 
 test('user cannot register with too weak password', function () {
+    // Mock the turnstile validation
+    $this->mock(\RyanChandler\LaravelCloudflareTurnstile\Rules\Turnstile::class, function ($mock) {
+        $mock->shouldReceive('passes')
+            ->andReturn(true);
+    });
+
     Livewire::test(Register::class)
         ->set('name', 'Test User')
         ->set('email', 'test@example.com')
@@ -64,6 +76,12 @@ test('user cannot register with too weak password', function () {
 });
 
 test('user cannot register with password confirmation not matching', function () {
+    // Mock the turnstile validation
+    $this->mock(\RyanChandler\LaravelCloudflareTurnstile\Rules\Turnstile::class, function ($mock) {
+        $mock->shouldReceive('passes')
+            ->andReturn(true);
+    });
+
     Livewire::test(Register::class)
         ->set('name', 'Test User')
         ->set('email', 'test@example.com')
