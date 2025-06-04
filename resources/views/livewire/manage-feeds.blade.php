@@ -155,7 +155,7 @@
                     {{ __('Cancel') }}
                 </x-secondary-button>
 
-                <x-primary-button class="ml-3" wire:loading.attr="disabled">
+                <x-primary-button type="submit" class="ml-3" wire:loading.attr="disabled">
                     {{ __('Import Feeds') }}
                 </x-primary-button>
             </div>
