@@ -12,3 +12,11 @@ Some features that are yet to be implemented:
 - Caching
 - Optimizing Livewire components to work with less data per request
 - Replace widget polling with event listeners
+
+## Screenshots
+
+### Light theme
+![](docs/images/feedgets-dashboard-light.png)
+
+### Dark theme
+![](docs/images/feedgets-dashboard-dark.png)
