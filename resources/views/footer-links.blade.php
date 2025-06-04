@@ -1,7 +1,7 @@
 @guest
-    <a href="{{ route('login') }}" class="underline" wire:navigate>{{ __('Log in') }}</a>
+    <a href="{{ route('login') }}" class="underline">{{ __('Log in') }}</a>
     <span> | </span>
-    <a href="{{ route('register') }}" class="underline" wire:navigate>{{ __('Sign up') }}</a>
+    <a href="{{ route('register') }}" class="underline">{{ __('Sign up') }}</a>
 @else
     <a href="{{ route('dashboard') }}" class="underline" wire:navigate>{{ __('Dashboard') }}</a>
 @endguest

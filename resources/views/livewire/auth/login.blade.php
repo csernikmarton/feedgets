@@ -23,7 +23,7 @@
             />
 
             @if (Route::has('password.request'))
-                <a class="text-sm underline" href="{{ route('password.request') }}" wire:navigate>{{ __('Forgot your password?') }}</a>
+                <a class="text-sm underline" href="{{ route('password.request') }}">{{ __('Forgot your password?') }}</a>
             @endif
         </div>
 

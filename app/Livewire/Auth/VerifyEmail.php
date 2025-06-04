@@ -36,6 +36,6 @@ class VerifyEmail extends Component
     {
         $logout();
 
-        $this->redirect('/', navigate: true);
+        $this->redirect('/');
     }
 }
