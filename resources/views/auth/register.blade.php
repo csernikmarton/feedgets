@@ -1,1 +1,0 @@
-<x-layouts.auth>
