@@ -51,7 +51,7 @@
     </div>
 
     <script>
-        window.addEventListener('DOMContentLoaded', function() {
+        window.addEventListener('livewire:navigated', function() {
             function waitForSortable() {
                 if (typeof Sortable !== 'undefined') {
                     // console.log('Sortable.js loaded, version: ' + Sortable.version);
