@@ -72,7 +72,7 @@
             </div>
         </div>
     @else
-        <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
+        <div class="flex flex-col min-h-svh bg-gray-100 dark:bg-gray-900">
             @include('layouts.navigation')
 
             @if (isset($header))
@@ -83,7 +83,7 @@
                 </header>
             @endif
 
-            <main>
+            <main class="grow">
                 {{ $slot }}
             </main>
 
