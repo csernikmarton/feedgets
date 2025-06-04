@@ -87,7 +87,7 @@
                         <h2 class="text-lg font-medium text-gray-900 dark:text-white">{{ __('Your Feeds') }}</h2>
                         <span class="text-sm text-gray-500 dark:text-gray-400">{{ count($feeds) }} {{ Str::plural('feed', count($feeds)) }}</span>
                     </div>
-                    
+
                     <ul class="divide-y divide-gray-200 dark:divide-gray-700">
                         @forelse($feeds as $feed)
                             <li class="p-6 flex items-center justify-between">
@@ -118,7 +118,7 @@
             </div>
         </div>
     </div>
-    
+
     <x-modal name="import-opml-modal" :show="false" focusable>
         <form wire:submit="importOpml" class="p-6" enctype="multipart/form-data">
             <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
@@ -144,7 +144,7 @@
                            hover:file:bg-blue-100 dark:file:bg-blue-900 dark:file:text-blue-200"
                 >
                 @error('opmlFile') <span class="mt-2 text-red-600 text-sm">{{ $message }}</span> @enderror
-                
+
                 <div wire:loading wire:target="opmlFile" class="mt-2 text-sm text-gray-600 dark:text-gray-400">
                     {{ __('Uploading...') }}
                 </div>
@@ -155,7 +155,7 @@
                     {{ __('Cancel') }}
                 </x-secondary-button>
 
-                <x-primary-button type="submit" class="ml-3" wire:loading.attr="disabled">
+                <x-primary-button type="submit" class="ml-3" :loadingTarget="'importOpml'" :loadingText="__('Importing...')">
                     {{ __('Import Feeds') }}
                 </x-primary-button>
             </div>
