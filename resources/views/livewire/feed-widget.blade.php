@@ -41,7 +41,7 @@
                         });
                         $el.remove();
                     "
-                    class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100 hover:bg-blue-200 dark:hover:bg-blue-700 transition-colors"
+                    class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100 hover:bg-blue-200 dark:hover:bg-blue-700 transition-colors text-nowrap"
                     title="{{ __('Mark all as read') }}"
                 >
                     {{ $unreadCount }} {{ __('unread') }}
