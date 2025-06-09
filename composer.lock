@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ef38bede4a436e0ac03d8285dac32185",
+    "content-hash": "cd718765e5879dc4d3ef8dd94db4e2b8",
     "packages": [
         {
             "name": "brick/math",
@@ -3364,16 +3364,16 @@
         },
         {
             "name": "ryangjchandler/laravel-cloudflare-turnstile",
-            "version": "dev-Javascript-fix",
+            "version": "v2.0.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/AndrasMa/laravel-cloudflare-turnstile.git",
-                "reference": "e45bf71985d7af1e73d93ee09a6faf5c13d2df04"
+                "url": "https://github.com/ryangjchandler/laravel-cloudflare-turnstile.git",
+                "reference": "7faaad7a0a82633485ce56b4bcae68acddd474ac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AndrasMa/laravel-cloudflare-turnstile/zipball/e45bf71985d7af1e73d93ee09a6faf5c13d2df04",
-                "reference": "e45bf71985d7af1e73d93ee09a6faf5c13d2df04",
+                "url": "https://api.github.com/repos/ryangjchandler/laravel-cloudflare-turnstile/zipball/7faaad7a0a82633485ce56b4bcae68acddd474ac",
+                "reference": "7faaad7a0a82633485ce56b4bcae68acddd474ac",
                 "shasum": ""
             },
             "require": {
@@ -3398,12 +3398,12 @@
             "type": "library",
             "extra": {
                 "laravel": {
-                    "providers": [
-                        "RyanChandler\\LaravelCloudflareTurnstile\\LaravelCloudflareTurnstileServiceProvider"
-                    ],
                     "aliases": {
                         "LaravelCloudflareTurnstile": "RyanChandler\\LaravelCloudflareTurnstile\\Facades\\LaravelCloudflareTurnstile"
-                    }
+                    },
+                    "providers": [
+                        "RyanChandler\\LaravelCloudflareTurnstile\\LaravelCloudflareTurnstileServiceProvider"
+                    ]
                 }
             },
             "autoload": {
@@ -3412,25 +3412,7 @@
                     "RyanChandler\\LaravelCloudflareTurnstile\\Database\\Factories\\": "database/factories"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "RyanChandler\\LaravelCloudflareTurnstile\\Tests\\": "tests"
-                }
-            },
-            "scripts": {
-                "analyse": [
-                    "vendor/bin/phpstan analyse"
-                ],
-                "test": [
-                    "vendor/bin/pest"
-                ],
-                "test-coverage": [
-                    "vendor/bin/pest --coverage"
-                ],
-                "format": [
-                    "vendor/bin/pint"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -3449,9 +3431,10 @@
                 "ryangjchandler"
             ],
             "support": {
-                "source": "https://github.com/AndrasMa/laravel-cloudflare-turnstile/tree/Javascript-fix"
+                "issues": "https://github.com/ryangjchandler/laravel-cloudflare-turnstile/issues",
+                "source": "https://github.com/ryangjchandler/laravel-cloudflare-turnstile/tree/v2.0.3"
             },
-            "time": "2025-05-17T11:21:15+00:00"
+            "time": "2025-06-08T20:08:45+00:00"
         },
         {
             "name": "spatie/laravel-package-tools",
@@ -9468,9 +9451,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "ryangjchandler/laravel-cloudflare-turnstile": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
