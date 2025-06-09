@@ -148,7 +148,7 @@ class RefreshFeeds extends Command
             ],
             [
                 'title' => html_entity_decode($data['title']),
-                'description' => html_entity_decode($data['description']),
+                'description' => mb_substr(html_entity_decode($data['description']), 0, 1000),
                 'link' => $data['link'],
                 'published_at' => $data['published_at'],
             ]
