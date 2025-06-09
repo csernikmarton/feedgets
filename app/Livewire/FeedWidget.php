@@ -99,9 +99,9 @@ class FeedWidget extends Component
     }
 
     #[On('article-read')]
-    public function handleArticleRead($data)
+    public function handleArticleRead($data = [])
     {
-        // $this->refreshUnreadCount();
+        $this->refreshUnreadCount();
     }
 
     public function refresh()
