@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Models\Article;
 use App\Models\Feed;
 use Illuminate\Console\Command;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use SimpleXMLElement;
@@ -59,12 +60,16 @@ class RefreshFeeds extends Command
             $this->info("Processing response for feed: {$feed->title} (User ID: {$feed->user_id})");
 
             try {
-                if ($response->successful()) {
+                if (! ($response instanceof ConnectionException) && $response->successful()) {
                     $xml = new SimpleXMLElement($response->body());
                     $this->processRssFeed($feed, $xml);
                 } else {
-                    $this->error("Failed to fetch feed {$feed->title}: HTTP status {$response->status()}");
-                    Log::error("Failed to fetch feed {$feed->title} (User ID: {$feed->user_id}): HTTP status {$response->status()}");
+                    $errorMessage = $response instanceof ConnectionException
+                        ? 'Connection error: '.$response->getMessage()
+                        : 'Failed to fetch feed: HTTP status '.$response->status();
+
+                    $this->error("Failed to fetch feed {$feed->title}: {$errorMessage}");
+                    Log::error("Failed to fetch feed {$feed->title} (User ID: {$feed->user_id}): {$errorMessage}");
                 }
             } catch (\Exception $e) {
                 $this->error("Error processing feed {$feed->title}: {$e->getMessage()}");
