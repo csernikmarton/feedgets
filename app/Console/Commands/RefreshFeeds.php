@@ -8,6 +8,7 @@ use Illuminate\Console\Command;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use SimpleXMLElement;
 
 class RefreshFeeds extends Command
@@ -88,29 +89,28 @@ class RefreshFeeds extends Command
 
     private function processRssFeed(Feed $feed, SimpleXMLElement $xml)
     {
+        $articlesData = [];
+        $oldest_published_at = null;
+
         // Handle RSS 2.0
         if (isset($xml->channel)) {
-            $oldest_published_at = null;
             foreach ($xml->channel->item as $item) {
                 $published_at = isset($item->pubDate) ? date('Y-m-d H:i:s', strtotime((string) $item->pubDate)) : null;
-                $article = $this->createOrUpdateArticle($feed, [
+                $guid = (string) ($item->guid ?? $item->link);
+
+                $compositeKey = $feed->uuid.'|'.$guid;
+
+                $articlesData[$compositeKey] = [
                     'title' => (string) $item->title,
                     'description' => (string) $item->description,
                     'link' => (string) $item->link,
-                    'guid' => (string) ($item->guid ?? $item->link),
+                    'guid' => $guid,
                     'published_at' => $published_at ?? now(),
-                ]);
-                if ($article->is_read && ($oldest_published_at === null || $published_at < $oldest_published_at)) {
-                    $oldest_published_at = $published_at;
-                }
-            }
-            if ($oldest_published_at !== null) {
-                $feed->update(['oldest_published_at' => $oldest_published_at]);
+                ];
             }
         }
         // Handle Atom
         elseif (isset($xml->entry)) {
-            $oldest_published_at = null;
             foreach ($xml->entry as $entry) {
                 $link = '';
                 foreach ($entry->link as $linkObj) {
@@ -127,36 +127,80 @@ class RefreshFeeds extends Command
                 if ($published_at === null && isset($entry->updated)) {
                     $published_at = date('Y-m-d H:i:s', strtotime((string) $entry->updated));
                 }
-                $article = $this->createOrUpdateArticle($feed, [
+
+                $guid = (string) ($entry->id ?? $link);
+
+                $compositeKey = $feed->uuid.'|'.$guid;
+
+                $articlesData[$compositeKey] = [
                     'title' => (string) $entry->title,
                     'description' => (string) ($entry->content ?? $entry->summary ?? ''),
                     'link' => $link,
-                    'guid' => (string) ($entry->id ?? $link),
+                    'guid' => $guid,
                     'published_at' => $published_at ?? now(),
-                ]);
-                if ($article->is_read && ($oldest_published_at === null || $published_at < $oldest_published_at)) {
-                    $oldest_published_at = $published_at;
-                }
-            }
-            if ($oldest_published_at !== null) {
-                $feed->update(['oldest_published_at' => $oldest_published_at]);
+                ];
             }
         }
-    }
 
-    private function createOrUpdateArticle(Feed $feed, array $data)
-    {
-        return Article::updateOrCreate(
-            [
-                'feed_uuid' => $feed->uuid,
-                'guid' => $data['guid'],
-            ],
-            [
+        if (empty($articlesData)) {
+            return;
+        }
+
+        $guids = array_map(function ($data) {
+            return $data['guid'];
+        }, $articlesData);
+
+        $existingArticles = Article::query()
+            ->where('feed_uuid', $feed->uuid)
+            ->whereIn('guid', $guids)
+            ->get();
+
+        $existingArticlesMap = $existingArticles->mapWithKeys(function ($article) {
+            return [$article->feed_uuid.'|'.$article->guid => $article];
+        });
+
+        $articlesToUpdate = [];
+        $articlesToCreate = [];
+
+        foreach ($articlesData as $compositeKey => $data) {
+            $processedData = [
                 'title' => html_entity_decode($data['title']),
                 'description' => mb_substr(html_entity_decode($data['description']), 0, 1000),
                 'link' => $data['link'],
                 'published_at' => $data['published_at'],
-            ]
-        );
+            ];
+
+            if ($existingArticlesMap->has($compositeKey)) {
+                $article = $existingArticlesMap[$compositeKey];
+                $article->fill($processedData);
+                $articlesToUpdate[] = $article;
+
+                if ($article->is_read && ($oldest_published_at === null || $data['published_at'] < $oldest_published_at)) {
+                    $oldest_published_at = $data['published_at'];
+                }
+            } else {
+                $articlesToCreate[] = array_merge(
+                    $processedData,
+                    [
+                        'uuid' => Str::uuid()->__toString(),
+                        'feed_uuid' => $feed->uuid,
+                        'guid' => $data['guid'],
+                        'is_read' => false,
+                    ]
+                );
+            }
+        }
+
+        foreach ($articlesToUpdate as $article) {
+            $article->save();
+        }
+
+        if (! empty($articlesToCreate)) {
+            Article::insert($articlesToCreate);
+        }
+
+        if ($oldest_published_at !== null) {
+            $feed->update(['oldest_published_at' => $oldest_published_at]);
+        }
     }
 }
