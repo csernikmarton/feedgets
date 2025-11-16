@@ -56,7 +56,7 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @if(request()->routeIs(['login', 'register', 'password.request', 'password.reset', 'contact']))
-        @turnstileScripts()
+        <x-turnstile.scripts />
     @endif
 </head>
 <body class="font-sans text-gray-900 antialiased min-h-screen bg-gray-100 dark:bg-gray-900" x-cloak>

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "13f543dcf88f5b3ab56d0ba940a70bb9",
+    "content-hash": "e3f8d014f16c722ac0f2f59e01fd63ee",
     "packages": [
         {
             "name": "brick/math",
@@ -3448,16 +3448,16 @@
         },
         {
             "name": "ryangjchandler/laravel-cloudflare-turnstile",
-            "version": "v2.1.0",
+            "version": "v3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ryangjchandler/laravel-cloudflare-turnstile.git",
-                "reference": "f20b64eb5c1a72671107c9f6fc46de4abda5cc29"
+                "reference": "a9f5fd54c82983bc755fae0a03368ec7fa659f9d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ryangjchandler/laravel-cloudflare-turnstile/zipball/f20b64eb5c1a72671107c9f6fc46de4abda5cc29",
-                "reference": "f20b64eb5c1a72671107c9f6fc46de4abda5cc29",
+                "url": "https://api.github.com/repos/ryangjchandler/laravel-cloudflare-turnstile/zipball/a9f5fd54c82983bc755fae0a03368ec7fa659f9d",
+                "reference": "a9f5fd54c82983bc755fae0a03368ec7fa659f9d",
                 "shasum": ""
             },
             "require": {
@@ -3516,9 +3516,9 @@
             ],
             "support": {
                 "issues": "https://github.com/ryangjchandler/laravel-cloudflare-turnstile/issues",
-                "source": "https://github.com/ryangjchandler/laravel-cloudflare-turnstile/tree/v2.1.0"
+                "source": "https://github.com/ryangjchandler/laravel-cloudflare-turnstile/tree/v3.0.0"
             },
-            "time": "2025-10-29T17:01:42+00:00"
+            "time": "2025-11-05T18:28:00+00:00"
         },
         {
             "name": "spatie/laravel-package-tools",
