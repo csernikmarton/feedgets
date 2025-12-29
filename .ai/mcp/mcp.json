@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "laravel-boost": {
+      "command": "php",
+      "args": [
+        "/Users/csernikmarton/Sites/localhost/feedgets/artisan",
+        "boost:mcp"
+      ]
+    }
+  }
+}
