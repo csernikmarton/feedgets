@@ -13,7 +13,14 @@ use Livewire\Component;
 #[Title('Dashboard')]
 class FeedDashboard extends Component
 {
+    public $isRefreshing = false;
+
     public function mount() {}
+
+    public function isRefreshing(): bool
+    {
+        return $this->isRefreshing;
+    }
 
     public function render()
     {
