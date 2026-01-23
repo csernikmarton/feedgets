@@ -52,19 +52,19 @@
                     <form wire:submit="save" class="space-y-4">
                         <div>
                             <x-input-label for="url" :value="__('RSS Feed URL')" />
-                            <x-text-input wire:model.deep="form.url" id="url" name="url" type="text" required autocomplete="url" />
+                            <x-text-input wire:model="form.url" id="url" name="url" type="text" required autocomplete="url" />
                             <x-input-error class="mt-2" :messages="$errors->get('form.url')" />
                         </div>
 
                         <div>
                             <x-input-label for="title" :value="__('Title (optional)')" />
-                            <x-text-input wire:model.deep="form.title" id="title" name="title" type="text" autofocus autocomplete="title" />
+                            <x-text-input wire:model="form.title" id="title" name="title" type="text" autofocus autocomplete="title" />
                             <x-input-error class="mt-2" :messages="$errors->get('form.title')" />
                         </div>
 
                         <div>
                             <x-input-label for="description" :value="__('Description (optional)')" />
-                            <x-textarea wire:model.deep="form.description" id="description" name="description" type="text" autocomplete="description" />
+                            <x-textarea wire:model="form.description" id="description" name="description" type="text" autocomplete="description" />
                             <x-input-error class="mt-2" :messages="$errors->get('form.description')" />
                         </div>
 

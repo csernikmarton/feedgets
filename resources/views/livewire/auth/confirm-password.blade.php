@@ -8,7 +8,7 @@
 
     <form wire:submit="confirmPassword" class="flex flex-col gap-6">
         <x-text-input
-            wire:model.deep="password"
+            wire:model="password"
             :label="__('Password')"
             type="password"
             required

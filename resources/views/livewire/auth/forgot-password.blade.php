@@ -5,7 +5,7 @@
 
     <form wire:submit="sendPasswordResetLink" class="flex flex-col gap-6">
         <x-text-input
-                wire:model.deep="email"
+                wire:model="email"
                 :label="__('Email Address')"
                 type="email"
                 required

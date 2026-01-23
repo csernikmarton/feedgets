@@ -1,6 +1,6 @@
 <div {{ $attributes->class(['mt-2 flex justify-center']) }}>
     <div wire:ignore>
-        <x-turnstile wire:model.deep="turnstileResponse"/>
+        <x-turnstile wire:model="turnstileResponse"/>
     </div>
 </div>
 <x-input-error :messages="$errors->get('turnstileResponse')"/>

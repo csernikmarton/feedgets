@@ -5,7 +5,7 @@
 
     <form wire:submit="register" class="flex flex-col gap-6">
         <x-text-input
-            wire:model.deep="name"
+            wire:model="name"
             :label="__('Name')"
             type="text"
             required
@@ -16,7 +16,7 @@
         <x-input-error :messages="$errors->get('name')" class="mt-2" />
 
         <x-text-input
-            wire:model.deep="email"
+            wire:model="email"
             :label="__('Email address')"
             type="email"
             required
@@ -26,7 +26,7 @@
         <x-input-error :messages="$errors->get('email')" class="mt-2" />
 
         <x-text-input
-            wire:model.deep="password"
+            wire:model="password"
             :label="__('Password')"
             type="password"
             required
@@ -47,7 +47,7 @@
         </div>
 
         <x-text-input
-            wire:model.deep="password_confirmation"
+            wire:model="password_confirmation"
             :label="__('Confirm password')"
             type="password"
             required
