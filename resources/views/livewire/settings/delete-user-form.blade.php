@@ -75,7 +75,7 @@
                 <form wire:submit="deleteUser" class="mt-5 sm:mt-6">
                     <div>
                         <x-input-label for="password" :value="__('Password')" />
-                        <x-text-input wire:model="password" id="password" name="password" type="password" class="mt-1 block w-full" placeholder="{{ __('Password') }}" required />
+                        <x-text-input wire:model.deep="password" id="password" name="password" type="password" class="mt-1 block w-full" placeholder="{{ __('Password') }}" required />
                         <x-input-error :messages="$errors->get('password')" class="mt-2" />
                     </div>
 

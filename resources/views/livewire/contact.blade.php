@@ -9,7 +9,7 @@
 
     <form wire:submit="submit" class="flex flex-col gap-6">
         <x-text-input
-            wire:model="name"
+            wire:model.deep="name"
             :label="__('Name')"
             type="text"
             required
@@ -19,7 +19,7 @@
         <x-input-error :messages="$errors->get('name')" class="mt-2" />
 
         <x-text-input
-            wire:model="email"
+            wire:model.deep="email"
             :label="__('Email address')"
             type="email"
             required

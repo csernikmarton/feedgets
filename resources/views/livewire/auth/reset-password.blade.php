@@ -5,7 +5,7 @@
 
     <form wire:submit="resetPassword" class="flex flex-col gap-6">
         <x-text-input
-            wire:model="email"
+            wire:model.deep="email"
             :label="__('Email')"
             type="email"
             required
@@ -13,7 +13,7 @@
         />
 
         <x-text-input
-            wire:model="password"
+            wire:model.deep="password"
             :label="__('Password')"
             type="password"
             required
@@ -22,7 +22,7 @@
         />
 
         <x-text-input
-            wire:model="password_confirmation"
+            wire:model.deep="password_confirmation"
             :label="__('Confirm password')"
             type="password"
             required
