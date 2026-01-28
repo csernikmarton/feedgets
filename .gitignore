@@ -22,3 +22,20 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+
+# AI configs
+/.ai/mcp/mcp.json
+/.claude
+/.codex
+/.cursor
+/.gemini
+/.github/copilot*
+/.junie
+/.opencode
+/.vscode/mcp.json
+/.mcp.json
+AGENTS.md
+boost.json
+CLAUDE.md
+GEMINI.md
+opencode.json
