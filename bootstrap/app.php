@@ -26,6 +26,10 @@ return Application::configure(basePath: dirname(__DIR__))
                 return;
             }
 
+            if ($exception instanceof \Illuminate\Http\Exceptions\MalformedUrlException) {
+                return;
+            }
+
             if (method_exists($exception, 'getStatusCode') && in_array($exception->getStatusCode(), [403, 404, 405, 419])) {
                 return;
             }
