@@ -28,6 +28,26 @@ class Login extends Component
 
     public bool $remember = false;
 
+    public function updatedEmail($value): void
+    {
+        $this->email = is_array($value) ? '' : $value;
+    }
+
+    public function updatedPassword($value): void
+    {
+        $this->password = is_array($value) ? '' : $value;
+    }
+
+    public function updatedTurnstileResponse($value): void
+    {
+        $this->turnstileResponse = is_array($value) ? '' : $value;
+    }
+
+    public function updatedRemember($value): void
+    {
+        $this->remember = is_array($value) ? false : (bool) $value;
+    }
+
     /**
      * Handle an incoming authentication request.
      */
