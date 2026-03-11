@@ -8,8 +8,10 @@ use RyanChandler\LaravelCloudflareTurnstile\Rules\Turnstile;
 beforeEach(function () {
     // Mock the Turnstile validation to always pass
     $this->mock(Turnstile::class, function ($mock) {
-        $mock->shouldReceive('passes')
-            ->andReturn(true);
+        $mock->shouldReceive('validate')
+            ->andReturnUsing(function ($attribute, $value, $fail) {
+                // Do nothing - validation passes
+            });
     });
 });
 

@@ -3,6 +3,7 @@
 use App\Livewire\Auth\Register;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Livewire;
 
 test('registration page can be rendered', function () {
@@ -12,10 +13,14 @@ test('registration page can be rendered', function () {
 });
 
 test('new users can register', function () {
+    Mail::fake();
+
     // Mock the turnstile validation
     $this->mock(\RyanChandler\LaravelCloudflareTurnstile\Rules\Turnstile::class, function ($mock) {
-        $mock->shouldReceive('passes')
-            ->andReturn(true);
+        $mock->shouldReceive('validate')
+            ->andReturnUsing(function ($attribute, $value, $fail) {
+                // Do nothing - validation passes
+            });
     });
 
     $name = 'Test User';
@@ -44,8 +49,10 @@ test('new users can register', function () {
 test('user cannot register with invalid email', function () {
     // Mock the turnstile validation
     $this->mock(\RyanChandler\LaravelCloudflareTurnstile\Rules\Turnstile::class, function ($mock) {
-        $mock->shouldReceive('passes')
-            ->andReturn(true);
+        $mock->shouldReceive('validate')
+            ->andReturnUsing(function ($attribute, $value, $fail) {
+                // Do nothing - validation passes
+            });
     });
 
     Livewire::test(Register::class)
@@ -61,8 +68,10 @@ test('user cannot register with invalid email', function () {
 test('user cannot register with too weak password', function () {
     // Mock the turnstile validation
     $this->mock(\RyanChandler\LaravelCloudflareTurnstile\Rules\Turnstile::class, function ($mock) {
-        $mock->shouldReceive('passes')
-            ->andReturn(true);
+        $mock->shouldReceive('validate')
+            ->andReturnUsing(function ($attribute, $value, $fail) {
+                // Do nothing - validation passes
+            });
     });
 
     Livewire::test(Register::class)
@@ -78,8 +87,10 @@ test('user cannot register with too weak password', function () {
 test('user cannot register with password confirmation not matching', function () {
     // Mock the turnstile validation
     $this->mock(\RyanChandler\LaravelCloudflareTurnstile\Rules\Turnstile::class, function ($mock) {
-        $mock->shouldReceive('passes')
-            ->andReturn(true);
+        $mock->shouldReceive('validate')
+            ->andReturnUsing(function ($attribute, $value, $fail) {
+                // Do nothing - validation passes
+            });
     });
 
     Livewire::test(Register::class)
