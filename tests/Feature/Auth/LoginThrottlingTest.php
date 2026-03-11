@@ -10,8 +10,10 @@ use Livewire\Livewire;
 test('login attempts are throttled after too many failed attempts', function () {
     // Mock the turnstile validation
     $this->mock(\RyanChandler\LaravelCloudflareTurnstile\Rules\Turnstile::class, function ($mock) {
-        $mock->shouldReceive('passes')
-            ->andReturn(true);
+        $mock->shouldReceive('validate')
+            ->andReturnUsing(function ($attribute, $value, $fail) {
+                // Do nothing - validation passes
+            });
     });
 
     Event::fake([Lockout::class]);
@@ -45,8 +47,10 @@ test('login attempts are throttled after too many failed attempts', function () 
 test('rate limiter is cleared after successful login', function () {
     // Mock the turnstile validation
     $this->mock(\RyanChandler\LaravelCloudflareTurnstile\Rules\Turnstile::class, function ($mock) {
-        $mock->shouldReceive('passes')
-            ->andReturn(true);
+        $mock->shouldReceive('validate')
+            ->andReturnUsing(function ($attribute, $value, $fail) {
+                // Do nothing - validation passes
+            });
     });
 
     $user = User::factory()->create();

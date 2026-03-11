@@ -19,14 +19,14 @@ use RyanChandler\LaravelCloudflareTurnstile\Rules\Turnstile;
 class Login extends Component
 {
     #[Validate('required|string|email')]
-    public string $email = '';
+    public mixed $email = '';
 
     #[Validate('required|string')]
-    public string $password = '';
+    public mixed $password = '';
 
-    public string $turnstileResponse = '';
+    public mixed $turnstileResponse = '';
 
-    public bool $remember = false;
+    public mixed $remember = false;
 
     public function updatedEmail($value): void
     {
@@ -53,6 +53,12 @@ class Login extends Component
      */
     public function login(): void
     {
+        // Normalize array inputs from bots
+        $this->email = is_array($this->email) ? '' : $this->email;
+        $this->password = is_array($this->password) ? '' : $this->password;
+        $this->turnstileResponse = is_array($this->turnstileResponse) ? '' : $this->turnstileResponse;
+        $this->remember = is_array($this->remember) ? false : (bool) $this->remember;
+
         $this->validate([
             'turnstileResponse' => ['required', app(Turnstile::class)],
         ], [

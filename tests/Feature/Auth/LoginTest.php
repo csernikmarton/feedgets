@@ -14,8 +14,10 @@ test('login page can be rendered', function () {
 test('users can login with correct credentials', function () {
     // Mock the turnstile validation
     $this->mock(\RyanChandler\LaravelCloudflareTurnstile\Rules\Turnstile::class, function ($mock) {
-        $mock->shouldReceive('passes')
-            ->andReturn(true);
+        $mock->shouldReceive('validate')
+            ->andReturnUsing(function ($attribute, $value, $fail) {
+                // Do nothing - validation passes
+            });
     });
 
     $user = User::factory()->create();
@@ -33,8 +35,10 @@ test('users can login with correct credentials', function () {
 test('users cannot login with incorrect password', function () {
     // Mock the turnstile validation
     $this->mock(\RyanChandler\LaravelCloudflareTurnstile\Rules\Turnstile::class, function ($mock) {
-        $mock->shouldReceive('passes')
-            ->andReturn(true);
+        $mock->shouldReceive('validate')
+            ->andReturnUsing(function ($attribute, $value, $fail) {
+                // Do nothing - validation passes
+            });
     });
 
     $user = User::factory()->create();
@@ -52,8 +56,10 @@ test('users cannot login with incorrect password', function () {
 test('users cannot login with email that does not exist', function () {
     // Mock the turnstile validation
     $this->mock(\RyanChandler\LaravelCloudflareTurnstile\Rules\Turnstile::class, function ($mock) {
-        $mock->shouldReceive('passes')
-            ->andReturn(true);
+        $mock->shouldReceive('validate')
+            ->andReturnUsing(function ($attribute, $value, $fail) {
+                // Do nothing - validation passes
+            });
     });
 
     Livewire::test(Login::class)
@@ -69,8 +75,10 @@ test('users cannot login with email that does not exist', function () {
 test('remember me functionality works', function () {
     // Mock the turnstile validation
     $this->mock(\RyanChandler\LaravelCloudflareTurnstile\Rules\Turnstile::class, function ($mock) {
-        $mock->shouldReceive('passes')
-            ->andReturn(true);
+        $mock->shouldReceive('validate')
+            ->andReturnUsing(function ($attribute, $value, $fail) {
+                // Do nothing - validation passes
+            });
     });
 
     // Create a mock guard
