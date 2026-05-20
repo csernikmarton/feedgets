@@ -18,9 +18,13 @@ class Feed extends Model
     /** @use HasFactory<FeedFactory> */
     use HasFactory, HasUuid;
 
-    protected $casts = [
-        'oldest_published_at' => 'datetime',
-    ];
+
+    protected function casts(): array
+    {
+        return [
+            'oldest_published_at' => 'datetime',
+        ];
+    }
 
     public function user(): BelongsTo
     {

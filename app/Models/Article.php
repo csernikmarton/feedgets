@@ -17,10 +17,14 @@ class Article extends Model
     /** @use HasFactory<ArticleFactory> */
     use HasFactory, HasUuid;
 
-    protected $casts = [
-        'published_at' => 'datetime',
-        'is_read' => 'boolean',
-    ];
+
+    protected function casts(): array
+    {
+        return [
+            'published_at' => 'datetime',
+            'is_read' => 'boolean',
+        ];
+    }
 
     public function feed(): BelongsTo
     {
