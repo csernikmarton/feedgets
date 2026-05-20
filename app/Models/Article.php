@@ -17,7 +17,6 @@ class Article extends Model
     /** @use HasFactory<ArticleFactory> */
     use HasFactory, HasUuid;
 
-
     protected function casts(): array
     {
         return [

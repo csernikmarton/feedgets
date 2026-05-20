@@ -18,7 +18,6 @@ class Feed extends Model
     /** @use HasFactory<FeedFactory> */
     use HasFactory, HasUuid;
 
-
     protected function casts(): array
     {
         return [
