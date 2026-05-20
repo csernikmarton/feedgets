@@ -4,6 +4,8 @@ namespace App\Console\Commands;
 
 use App\Models\Article;
 use App\Models\Feed;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
@@ -11,12 +13,10 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use SimpleXMLElement;
 
+#[Signature('feeds:refresh {--user= : Refresh feeds for a specific user ID} {--uuid= : Refresh a specific feed by UUID}')]
+#[Description('Refresh all RSS feeds, feeds for a specific user, or a single feed by UUID')]
 class RefreshFeeds extends Command
 {
-    protected $signature = 'feeds:refresh {--user= : Refresh feeds for a specific user ID} {--uuid= : Refresh a specific feed by UUID}';
-
-    protected $description = 'Refresh all RSS feeds, feeds for a specific user, or a single feed by UUID';
-
     public function handle()
     {
         $userId = $this->option('user');

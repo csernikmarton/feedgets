@@ -10,6 +10,7 @@ use Illuminate\Http\Client\Pool;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
+use Symfony\Component\Console\Output\BufferedOutput;
 
 uses(RefreshDatabase::class);
 
@@ -200,7 +201,7 @@ test('refresh command handles HTTP errors', function () {
     ]);
 
     // Capture output
-    $output = new \Symfony\Component\Console\Output\BufferedOutput;
+    $output = new BufferedOutput;
 
     // Run the command
     Artisan::call('feeds:refresh', [], $output);
@@ -227,7 +228,7 @@ test('refresh command handles XML parsing errors', function () {
     ]);
 
     // Capture output
-    $output = new \Symfony\Component\Console\Output\BufferedOutput;
+    $output = new BufferedOutput;
 
     // Run the command
     Artisan::call('feeds:refresh', [], $output);
@@ -293,7 +294,7 @@ XML
     ]);
 
     // Capture output
-    $output = new \Symfony\Component\Console\Output\BufferedOutput;
+    $output = new BufferedOutput;
 
     // Run the command with UUID filter
     Artisan::call('feeds:refresh', ['--uuid' => $feed1->uuid], $output);

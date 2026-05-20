@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Article;
 use App\Models\Feed;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -179,7 +180,7 @@ class FeedWidget extends Component
         $this->isLoading = false;
     }
 
-    public function getArticles(): \Illuminate\Database\Eloquent\Collection
+    public function getArticles(): Collection
     {
         return $this->feed->articles()
             ->orderByDesc('published_at')

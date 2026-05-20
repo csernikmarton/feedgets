@@ -1,11 +1,15 @@
 <?php
 
+use App\Livewire\Forms\FeedForm;
 use App\Livewire\ManageFeeds;
 use App\Models\Feed;
 use App\Models\User;
+use App\Services\OpmlExportService;
+use App\Services\OpmlImportService;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 beforeEach(function () {
     $this->user = User::factory()->create();
@@ -205,7 +209,7 @@ test('component resets editing state when deleting the currently edited feed', f
 
 test('component can import OPML file', function () {
     // Mock the OpmlImportService
-    $this->mock(\App\Services\OpmlImportService::class, function ($mock) {
+    $this->mock(OpmlImportService::class, function ($mock) {
         $mock->shouldReceive('import')
             ->once()
             ->andReturn([
@@ -231,7 +235,7 @@ test('component can import OPML file', function () {
 
 test('component handles OPML import errors', function () {
     // Mock the OpmlImportService to return an error
-    $this->mock(\App\Services\OpmlImportService::class, function ($mock) {
+    $this->mock(OpmlImportService::class, function ($mock) {
         $mock->shouldReceive('import')
             ->once()
             ->andReturn([
@@ -271,26 +275,26 @@ test('component handles empty OPML file contents', function () {
 
 test('component can export OPML file', function () {
     // Create a mock of OpmlExportService
-    $mockExporter = Mockery::mock(\App\Services\OpmlExportService::class);
+    $mockExporter = Mockery::mock(OpmlExportService::class);
     $mockExporter->shouldReceive('export')
         ->once()
         ->with($this->user->id) // Ensure it's called with the correct user ID
         ->andReturn('<?xml version="1.0" encoding="UTF-8"?><opml version="1.0"></opml>');
 
     // Bind the mock to the container
-    app()->instance(\App\Services\OpmlExportService::class, $mockExporter);
+    app()->instance(OpmlExportService::class, $mockExporter);
 
     // Mock Auth facade to return the test user's ID
-    \Illuminate\Support\Facades\Auth::shouldReceive('id')
+    Illuminate\Support\Facades\Auth::shouldReceive('id')
         ->andReturn($this->user->id);
 
     // Create a component instance directly to test the method
     $component = new ManageFeeds;
-    $component->form = new \App\Livewire\Forms\FeedForm($component, 'form');
+    $component->form = new FeedForm($component, 'form');
     $response = $component->exportOpml();
 
     // Verify the response is a download
-    $this->assertInstanceOf(\Symfony\Component\HttpFoundation\StreamedResponse::class, $response);
+    $this->assertInstanceOf(StreamedResponse::class, $response);
     $this->assertEquals('text/xml', $response->headers->get('Content-Type'));
     $this->assertEquals('attachment; filename=feedgets_subscriptions_'.date('Y-m-d').'.opml', $response->headers->get('Content-Disposition'));
 });
@@ -300,22 +304,22 @@ test('component streams OPML content in the response', function () {
     $expectedOpmlContent = '<?xml version="1.0" encoding="UTF-8"?><opml version="1.0"><head><title>Test Export</title></head><body></body></opml>';
 
     // Create a mock of OpmlExportService
-    $mockExporter = Mockery::mock(\App\Services\OpmlExportService::class);
+    $mockExporter = Mockery::mock(OpmlExportService::class);
     $mockExporter->shouldReceive('export')
         ->once()
         ->with($this->user->id)
         ->andReturn($expectedOpmlContent);
 
     // Bind the mock to the container
-    app()->instance(\App\Services\OpmlExportService::class, $mockExporter);
+    app()->instance(OpmlExportService::class, $mockExporter);
 
     // Mock Auth facade to return the test user's ID
-    \Illuminate\Support\Facades\Auth::shouldReceive('id')
+    Illuminate\Support\Facades\Auth::shouldReceive('id')
         ->andReturn($this->user->id);
 
     // Create a component instance
     $component = new ManageFeeds;
-    $component->form = new \App\Livewire\Forms\FeedForm($component, 'form');
+    $component->form = new FeedForm($component, 'form');
 
     // Capture the output of the streamed response
     ob_start();
@@ -329,13 +333,13 @@ test('component streams OPML content in the response', function () {
 
 test('component logs error and flashes session error when OPML export fails', function () {
     // Mock the export service to throw an exception
-    $mockExporter = Mockery::mock(\App\Services\OpmlExportService::class);
+    $mockExporter = Mockery::mock(OpmlExportService::class);
     $mockExporter->shouldReceive('export')
         ->once()
         ->with(1)
         ->andThrow(new Exception('Mocked export exception'));
 
-    app()->instance(\App\Services\OpmlExportService::class, $mockExporter);
+    app()->instance(OpmlExportService::class, $mockExporter);
 
     // Fake Auth
     Auth::shouldReceive('id')->andReturn(1);

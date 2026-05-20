@@ -4,6 +4,8 @@ namespace App\Livewire;
 
 use App\Livewire\Forms\FeedForm;
 use App\Models\Feed;
+use App\Services\OpmlExportService;
+use App\Services\OpmlImportService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Layout;
@@ -104,7 +106,7 @@ class ManageFeeds extends Component
                 throw new \Exception(__('Could not read OPML file contents'));
             }
 
-            $importer = app(\App\Services\OpmlImportService::class);
+            $importer = app(OpmlImportService::class);
             $result = $importer->import($fileContents, Auth::id());
 
             if ($result['success']) {
@@ -124,7 +126,7 @@ class ManageFeeds extends Component
     public function exportOpml()
     {
         try {
-            $exporter = app(\App\Services\OpmlExportService::class);
+            $exporter = app(OpmlExportService::class);
             $opmlContent = $exporter->export(Auth::id());
 
             $filename = 'feedgets_subscriptions_'.date('Y-m-d').'.opml';

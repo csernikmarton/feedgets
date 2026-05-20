@@ -15,13 +15,6 @@ use Illuminate\Support\Str;
 class FeedFactory extends Factory
 {
     /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
-    protected $model = Feed::class;
-
-    /**
      * Define the model's default state.
      *
      * @return array<string, mixed>

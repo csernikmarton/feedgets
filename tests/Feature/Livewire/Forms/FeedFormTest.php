@@ -3,10 +3,13 @@
 use App\Livewire\Forms\FeedForm;
 use App\Models\Feed;
 use App\Models\User;
+use Illuminate\Support\Defer\DeferredCallbackCollection;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
 use Livewire\Component;
+use Livewire\Exceptions\MissingRulesException;
 
 beforeEach(function () {
     $this->user = User::factory()->create();
@@ -29,21 +32,21 @@ test('feed form can validate url', function () {
 
     expect(function () use ($form) {
         $form->validate();
-    })->toThrow(Illuminate\Validation\ValidationException::class);
+    })->toThrow(ValidationException::class);
 
     // Invalid URL
     $form->url = 'not-a-url';
 
     expect(function () use ($form) {
         $form->validate();
-    })->toThrow(Illuminate\Validation\ValidationException::class);
+    })->toThrow(ValidationException::class);
 
     // Valid URL
     $form->url = 'https://example.com';
 
     expect(function () use ($form) {
         $form->validate();
-    })->not->toThrow(Livewire\Exceptions\MissingRulesException::class);
+    })->not->toThrow(MissingRulesException::class);
 });
 
 test('feed form can set feed data', function () {
@@ -159,7 +162,7 @@ test('feed form calls artisan command to refresh feed after store', function () 
     // Mock Artisan calls
     Artisan::shouldReceive('call')
         ->once()
-        ->with('feeds:refresh', \Mockery::on(function ($args) {
+        ->with('feeds:refresh', Mockery::on(function ($args) {
             return isset($args['--uuid']);
         }))
         ->andReturn(0);
@@ -172,7 +175,7 @@ test('feed form calls artisan command to refresh feed after store', function () 
     $feed = $form->store();
 
     // Manually invoke deferred callbacks
-    app(\Illuminate\Support\Defer\DeferredCallbackCollection::class)->invoke();
+    app(DeferredCallbackCollection::class)->invoke();
 
     // Note: The Artisan call is deferred using Illuminate\Support\defer
     // We're testing that the code sets up the deferred call correctly
@@ -228,7 +231,7 @@ test('feed form calls artisan command to refresh feed after update', function ()
     // Mock Artisan calls
     Artisan::shouldReceive('call')
         ->once()
-        ->with('feeds:refresh', \Mockery::on(function ($args) use ($feed) {
+        ->with('feeds:refresh', Mockery::on(function ($args) use ($feed) {
             return isset($args['--uuid']) && $args['--uuid'] === $feed->uuid;
         }))
         ->andReturn(0);
@@ -242,7 +245,7 @@ test('feed form calls artisan command to refresh feed after update', function ()
     $form->update();
 
     // Manually invoke deferred callbacks
-    app(\Illuminate\Support\Defer\DeferredCallbackCollection::class)->invoke();
+    app(DeferredCallbackCollection::class)->invoke();
 
     // Note: The Artisan call is deferred using Illuminate\Support\defer
     // We're testing that the code sets up the deferred call correctly
@@ -308,19 +311,19 @@ test('extractTitleFromFeed handles HTTP errors gracefully', function () {
     // Mock a failed HTTP response that throws an exception
     Http::fake([
         'https://example.com/error' => function () {
-            throw new \Exception('Connection failed');
+            throw new Exception('Connection failed');
         },
     ]);
 
     // Mock the Log facade
     Log::shouldReceive('error')
         ->once()
-        ->with(\Mockery::pattern('/Error extracting title from feed/'));
+        ->with(Mockery::pattern('/Error extracting title from feed/'));
 
     // Mock Artisan to handle any deferred calls that might be triggered
     Artisan::shouldReceive('call')
         ->zeroOrMoreTimes()
-        ->with('feeds:refresh', \Mockery::any())
+        ->with('feeds:refresh', Mockery::any())
         ->andReturn(0);
 
     $form = new FeedForm($this->component, 'form');
@@ -331,7 +334,7 @@ test('extractTitleFromFeed handles HTTP errors gracefully', function () {
     $title = $method->invoke($form, 'https://example.com/error');
 
     // Manually invoke deferred callbacks
-    app(\Illuminate\Support\Defer\DeferredCallbackCollection::class)->invoke();
+    app(DeferredCallbackCollection::class)->invoke();
 
     expect($title)->toBe('Unnamed Feed');
 });
@@ -345,12 +348,12 @@ test('extractTitleFromFeed handles XML parsing errors gracefully', function () {
     // Mock the Log facade
     Log::shouldReceive('error')
         ->once()
-        ->with(\Mockery::pattern('/Error extracting title from feed/'));
+        ->with(Mockery::pattern('/Error extracting title from feed/'));
 
     // Mock Artisan to handle any deferred calls that might be triggered
     Artisan::shouldReceive('call')
         ->zeroOrMoreTimes()
-        ->with('feeds:refresh', \Mockery::any())
+        ->with('feeds:refresh', Mockery::any())
         ->andReturn(0);
 
     $form = new FeedForm($this->component, 'form');
@@ -361,7 +364,7 @@ test('extractTitleFromFeed handles XML parsing errors gracefully', function () {
     $title = $method->invoke($form, 'https://example.com/invalid');
 
     // Manually invoke deferred callbacks
-    app(\Illuminate\Support\Defer\DeferredCallbackCollection::class)->invoke();
+    app(DeferredCallbackCollection::class)->invoke();
 
     expect($title)->toBe('Unnamed Feed');
 });

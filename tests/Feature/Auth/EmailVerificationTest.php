@@ -28,7 +28,7 @@ test('email verification link can be requested', function () {
     Livewire::test(VerifyEmail::class)
         ->call('sendVerification');
 
-    Notification::assertSentTo($user, \Illuminate\Auth\Notifications\VerifyEmail::class);
+    Notification::assertSentTo($user, Illuminate\Auth\Notifications\VerifyEmail::class);
 });
 
 test('email can be verified', function () {

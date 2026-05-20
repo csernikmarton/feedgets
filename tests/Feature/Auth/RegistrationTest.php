@@ -5,6 +5,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Livewire;
+use RyanChandler\LaravelCloudflareTurnstile\Rules\Turnstile;
 
 test('registration page can be rendered', function () {
     $response = $this->get('/register');
@@ -16,7 +17,7 @@ test('new users can register', function () {
     Mail::fake();
 
     // Mock the turnstile validation
-    $this->mock(\RyanChandler\LaravelCloudflareTurnstile\Rules\Turnstile::class, function ($mock) {
+    $this->mock(Turnstile::class, function ($mock) {
         $mock->shouldReceive('validate')
             ->andReturnUsing(function ($attribute, $value, $fail) {
                 // Do nothing - validation passes
@@ -48,7 +49,7 @@ test('new users can register', function () {
 
 test('user cannot register with invalid email', function () {
     // Mock the turnstile validation
-    $this->mock(\RyanChandler\LaravelCloudflareTurnstile\Rules\Turnstile::class, function ($mock) {
+    $this->mock(Turnstile::class, function ($mock) {
         $mock->shouldReceive('validate')
             ->andReturnUsing(function ($attribute, $value, $fail) {
                 // Do nothing - validation passes
@@ -67,7 +68,7 @@ test('user cannot register with invalid email', function () {
 
 test('user cannot register with too weak password', function () {
     // Mock the turnstile validation
-    $this->mock(\RyanChandler\LaravelCloudflareTurnstile\Rules\Turnstile::class, function ($mock) {
+    $this->mock(Turnstile::class, function ($mock) {
         $mock->shouldReceive('validate')
             ->andReturnUsing(function ($attribute, $value, $fail) {
                 // Do nothing - validation passes
@@ -86,7 +87,7 @@ test('user cannot register with too weak password', function () {
 
 test('user cannot register with password confirmation not matching', function () {
     // Mock the turnstile validation
-    $this->mock(\RyanChandler\LaravelCloudflareTurnstile\Rules\Turnstile::class, function ($mock) {
+    $this->mock(Turnstile::class, function ($mock) {
         $mock->shouldReceive('validate')
             ->andReturnUsing(function ($attribute, $value, $fail) {
                 // Do nothing - validation passes

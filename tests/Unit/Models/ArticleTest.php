@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use App\Models\Article;
+use App\Models\Feed;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 test('article has uuid primary key', function () {
     $article = new Article;
@@ -39,6 +41,6 @@ test('article belongs to a feed', function () {
     $article = new Article;
     $relation = $article->feed();
 
-    expect($relation)->toBeInstanceOf(\Illuminate\Database\Eloquent\Relations\BelongsTo::class)
-        ->and($relation->getRelated())->toBeInstanceOf(\App\Models\Feed::class);
+    expect($relation)->toBeInstanceOf(BelongsTo::class)
+        ->and($relation->getRelated())->toBeInstanceOf(Feed::class);
 });
