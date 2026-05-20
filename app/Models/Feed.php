@@ -4,32 +4,19 @@ namespace App\Models;
 
 use App\Models\Traits\HasUuid;
 use Database\Factories\FeedFactory;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+#[Table(key: 'uuid', keyType: 'string', incrementing: false)]
+#[Fillable('uuid', 'user_id', 'title', 'url', 'description', 'position', 'column', 'oldest_published_at')]
 class Feed extends Model
 {
     /** @use HasFactory<FeedFactory> */
     use HasFactory, HasUuid;
-
-    protected $primaryKey = 'uuid';
-
-    protected $keyType = 'string';
-
-    public $incrementing = false;
-
-    protected $fillable = [
-        'uuid',
-        'user_id',
-        'title',
-        'url',
-        'description',
-        'position',
-        'column',
-        'oldest_published_at',
-    ];
 
     protected $casts = [
         'oldest_published_at' => 'datetime',

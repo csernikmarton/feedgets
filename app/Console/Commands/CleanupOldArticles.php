@@ -4,25 +4,15 @@ namespace App\Console\Commands;
 
 use App\Models\Article;
 use App\Models\Feed;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 
+#[Signature('articles:cleanup')]
+#[Description('Delete old articles')]
 class CleanupOldArticles extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'articles:cleanup';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Delete old articles';
-
     /**
      * Execute the console command.
      */
