@@ -6,8 +6,10 @@ use App\Models\Feed;
 use App\Models\User;
 use App\Services\OpmlImportService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Defer\DeferredCallbackCollection;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 uses(RefreshDatabase::class);
 
@@ -82,7 +84,7 @@ test('import skips duplicate feeds', function () {
 
     // Create a feed that already exists
     Feed::create([
-        'uuid' => \Illuminate\Support\Str::uuid(),
+        'uuid' => Str::uuid(),
         'user_id' => $user->id,
         'title' => 'Existing Feed',
         'url' => 'https://example.com/existing.rss',
@@ -225,7 +227,7 @@ OPML;
     $result = $service->import($validOpml, $user->id);
 
     // Execute deferred callbacks to trigger the Artisan command
-    app(\Illuminate\Support\Defer\DeferredCallbackCollection::class)->invoke();
+    app(DeferredCallbackCollection::class)->invoke();
 
     expect($result['success'])->toBeTrue()
         ->and($result['count'])->toBe(1);

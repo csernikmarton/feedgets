@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Password;
 use Livewire\Livewire;
+use RyanChandler\LaravelCloudflareTurnstile\Rules\Turnstile;
 
 test('forgot password page can be rendered', function () {
     $response = $this->get('/forgot-password');
@@ -23,7 +24,7 @@ test('reset password page can be rendered', function () {
 
 test('users can request password reset link', function () {
     // Mock the turnstile validation
-    $this->mock(\RyanChandler\LaravelCloudflareTurnstile\Rules\Turnstile::class, function ($mock) {
+    $this->mock(Turnstile::class, function ($mock) {
         $mock->shouldReceive('validate')
             ->andReturnUsing(function ($attribute, $value, $fail) {
                 // Do nothing - validation passes
@@ -44,7 +45,7 @@ test('users can request password reset link', function () {
 
 test('users receive success message even for non-existent email', function () {
     // Mock the turnstile validation
-    $this->mock(\RyanChandler\LaravelCloudflareTurnstile\Rules\Turnstile::class, function ($mock) {
+    $this->mock(Turnstile::class, function ($mock) {
         $mock->shouldReceive('validate')
             ->andReturnUsing(function ($attribute, $value, $fail) {
                 // Do nothing - validation passes
@@ -64,7 +65,7 @@ test('users receive success message even for non-existent email', function () {
 
 test('users can reset password with valid token', function () {
     // Mock the turnstile validation
-    $this->mock(\RyanChandler\LaravelCloudflareTurnstile\Rules\Turnstile::class, function ($mock) {
+    $this->mock(Turnstile::class, function ($mock) {
         $mock->shouldReceive('validate')
             ->andReturnUsing(function ($attribute, $value, $fail) {
                 // Do nothing - validation passes
@@ -87,7 +88,7 @@ test('users can reset password with valid token', function () {
 
 test('users cannot reset password with invalid token', function () {
     // Mock the turnstile validation
-    $this->mock(\RyanChandler\LaravelCloudflareTurnstile\Rules\Turnstile::class, function ($mock) {
+    $this->mock(Turnstile::class, function ($mock) {
         $mock->shouldReceive('validate')
             ->andReturnUsing(function ($attribute, $value, $fail) {
                 // Do nothing - validation passes
@@ -110,7 +111,7 @@ test('users cannot reset password with invalid token', function () {
 
 test('users cannot reset password with invalid email', function () {
     // Mock the turnstile validation
-    $this->mock(\RyanChandler\LaravelCloudflareTurnstile\Rules\Turnstile::class, function ($mock) {
+    $this->mock(Turnstile::class, function ($mock) {
         $mock->shouldReceive('validate')
             ->andReturnUsing(function ($attribute, $value, $fail) {
                 // Do nothing - validation passes
@@ -131,7 +132,7 @@ test('users cannot reset password with invalid email', function () {
 
 test('refresh-turnstile event is dispatched when validation fails (ForgotPassword)', function () {
     // Mock the Turnstile validation to fail
-    $this->mock(\RyanChandler\LaravelCloudflareTurnstile\Rules\Turnstile::class, function ($mock) {
+    $this->mock(Turnstile::class, function ($mock) {
         $mock->shouldReceive('validate')
             ->andReturnUsing(function ($attribute, $value, $fail) {
                 $fail('Turnstile validation failed.');
@@ -147,7 +148,7 @@ test('refresh-turnstile event is dispatched when validation fails (ForgotPasswor
 
 test('refresh-turnstile event is dispatched when validation fails (ResetPassword)', function () {
     // Mock the Turnstile validation to fail
-    $this->mock(\RyanChandler\LaravelCloudflareTurnstile\Rules\Turnstile::class, function ($mock) {
+    $this->mock(Turnstile::class, function ($mock) {
         $mock->shouldReceive('validate')
             ->andReturnUsing(function ($attribute, $value, $fail) {
                 $fail('Turnstile validation failed.');

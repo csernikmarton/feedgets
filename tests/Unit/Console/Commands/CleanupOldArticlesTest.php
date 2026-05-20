@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Console\Commands\CleanupOldArticles;
 use App\Models\Article;
 use App\Models\Feed;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -89,10 +90,10 @@ test('cleanup command handles exceptions gracefully', function () {
         ->withArgs(fn ($msg) => str_contains($msg, 'Simulated deletion failure'));
 
     // Partial mock of the command to override getFeeds() and deleteOldArticles()
-    $command = Mockery::mock(\App\Console\Commands\CleanupOldArticles::class)->makePartial();
+    $command = Mockery::mock(CleanupOldArticles::class)->makePartial();
     $command->shouldAllowMockingProtectedMethods();
     $command->shouldReceive('getFeeds')->once()->andReturn(collect([$feed]));
-    $command->shouldReceive('deleteOldArticles')->once()->with($feed)->andThrow(new \Exception('Simulated deletion failure'));
+    $command->shouldReceive('deleteOldArticles')->once()->with($feed)->andThrow(new Exception('Simulated deletion failure'));
     $command->shouldReceive('error')->once()->withArgs(fn ($msg) => str_contains($msg, 'Simulated deletion failure'));
 
     // Run the command

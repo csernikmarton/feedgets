@@ -2,7 +2,11 @@
 
 declare(strict_types=1);
 
+use App\Models\Article;
 use App\Models\Feed;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 test('feed has uuid primary key', function () {
     $feed = new Feed;
@@ -38,24 +42,24 @@ test('feed belongs to a user', function () {
     $feed = new Feed;
     $relation = $feed->user();
 
-    expect($relation)->toBeInstanceOf(\Illuminate\Database\Eloquent\Relations\BelongsTo::class)
-        ->and($relation->getRelated())->toBeInstanceOf(\App\Models\User::class);
+    expect($relation)->toBeInstanceOf(BelongsTo::class)
+        ->and($relation->getRelated())->toBeInstanceOf(User::class);
 });
 
 test('feed has many articles', function () {
     $feed = new Feed;
     $relation = $feed->articles();
 
-    expect($relation)->toBeInstanceOf(\Illuminate\Database\Eloquent\Relations\HasMany::class)
-        ->and($relation->getRelated())->toBeInstanceOf(\App\Models\Article::class);
+    expect($relation)->toBeInstanceOf(HasMany::class)
+        ->and($relation->getRelated())->toBeInstanceOf(Article::class);
 });
 
 test('feed has many unread articles', function () {
     $feed = new Feed;
     $relation = $feed->unreadArticles();
 
-    expect($relation)->toBeInstanceOf(\Illuminate\Database\Eloquent\Relations\HasMany::class)
-        ->and($relation->getRelated())->toBeInstanceOf(\App\Models\Article::class);
+    expect($relation)->toBeInstanceOf(HasMany::class)
+        ->and($relation->getRelated())->toBeInstanceOf(Article::class);
 
     // Check that the query includes the WHERE clause for is_read = false
     $sql = $relation->toSql();

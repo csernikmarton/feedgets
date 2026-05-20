@@ -6,10 +6,11 @@ use Illuminate\Auth\Events\Lockout;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\RateLimiter;
 use Livewire\Livewire;
+use RyanChandler\LaravelCloudflareTurnstile\Rules\Turnstile;
 
 test('login attempts are throttled after too many failed attempts', function () {
     // Mock the turnstile validation
-    $this->mock(\RyanChandler\LaravelCloudflareTurnstile\Rules\Turnstile::class, function ($mock) {
+    $this->mock(Turnstile::class, function ($mock) {
         $mock->shouldReceive('validate')
             ->andReturnUsing(function ($attribute, $value, $fail) {
                 // Do nothing - validation passes
@@ -46,7 +47,7 @@ test('login attempts are throttled after too many failed attempts', function () 
 
 test('rate limiter is cleared after successful login', function () {
     // Mock the turnstile validation
-    $this->mock(\RyanChandler\LaravelCloudflareTurnstile\Rules\Turnstile::class, function ($mock) {
+    $this->mock(Turnstile::class, function ($mock) {
         $mock->shouldReceive('validate')
             ->andReturnUsing(function ($attribute, $value, $fail) {
                 // Do nothing - validation passes

@@ -1,9 +1,11 @@
 <?php
 
 use App\Mail\ExceptionMail;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Exceptions\MalformedUrlException;
 use Symfony\Component\ErrorHandler\ErrorRenderer\HtmlErrorRenderer;
 use Symfony\Component\ErrorHandler\Exception\FlattenException;
 
@@ -22,11 +24,11 @@ return Application::configure(basePath: dirname(__DIR__))
                 return;
             }
 
-            if ($exception instanceof Illuminate\Auth\AuthenticationException) {
+            if ($exception instanceof AuthenticationException) {
                 return;
             }
 
-            if ($exception instanceof \Illuminate\Http\Exceptions\MalformedUrlException) {
+            if ($exception instanceof MalformedUrlException) {
                 return;
             }
 

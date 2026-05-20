@@ -4,6 +4,7 @@ use App\Livewire\FeedDashboardTotalUnreadCount;
 use App\Models\Article;
 use App\Models\Feed;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Livewire\Livewire;
 
 beforeEach(function () {
@@ -108,8 +109,8 @@ test('component can mark all articles as read', function () {
 
     // Verify all articles are marked as read in the database
     $this->assertDatabaseCount('articles', 5);
-    $this->assertEquals(5, \Illuminate\Support\Facades\DB::table('articles')->where('is_read', true)->count());
-    $this->assertEquals(0, \Illuminate\Support\Facades\DB::table('articles')->where('is_read', false)->count());
+    $this->assertEquals(5, DB::table('articles')->where('is_read', true)->count());
+    $this->assertEquals(0, DB::table('articles')->where('is_read', false)->count());
 });
 
 test('component recalculates total unread count when event is dispatched', function () {
