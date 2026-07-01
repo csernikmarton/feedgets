@@ -103,6 +103,8 @@ test('user can resend verification email', function () {
     $user->shouldReceive('getAttribute')->with('name')->andReturn($this->user->name);
     $user->shouldReceive('getAttribute')->with('email')->andReturn($this->user->email);
     $user->shouldReceive('getAttribute')->with('email_verified_at')->andReturn(null);
+    // The profile page renders the nested api-tokens component.
+    $user->shouldReceive('tokens->latest->get')->andReturn(collect());
 
     Auth::shouldReceive('user')->andReturn($user);
 
@@ -124,6 +126,8 @@ test('verified user cannot resend verification email', function () {
     $user->shouldReceive('getAttribute')->with('name')->andReturn($this->user->name);
     $user->shouldReceive('getAttribute')->with('email')->andReturn($this->user->email);
     $user->shouldReceive('getAttribute')->with('email_verified_at')->andReturn($this->user->email_verified_at);
+    // The profile page renders the nested api-tokens component.
+    $user->shouldReceive('tokens->latest->get')->andReturn(collect());
 
     Auth::shouldReceive('user')->andReturn($user);
 

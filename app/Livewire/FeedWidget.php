@@ -4,10 +4,9 @@ namespace App\Livewire;
 
 use App\Models\Article;
 use App\Models\Feed;
+use App\Services\FeedService;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -88,10 +87,7 @@ class FeedWidget extends Component
         if ($this->unreadCount > 0) {
             $this->isRefreshing = true;
 
-            $this->feed->articles()
-                ->where('is_read', false)
-                ->where('published_at', '<=', $publishedAt)
-                ->update(['is_read' => true]);
+            app(FeedService::class)->markAllAsRead($this->feed, $publishedAt);
 
             $this->refresh();
 
@@ -220,44 +216,13 @@ class FeedWidget extends Component
         }
 
         try {
-            DB::beginTransaction();
-
-            $feed->column = $validated['toColumn'];
-            $feed->save();
-
-            $feedsByColumn = [];
-            for ($i = 0; $i <= 2; $i++) {
-                $feedsByColumn[$i] = Feed::where('user_id', Auth::id())
-                    ->where('column', $i)
-                    ->whereNot('uuid', $validated['feedId'])
-                    ->orderBy('position')
-                    ->get();
-            }
-
-            $targetColumn = $feedsByColumn[$validated['toColumn']];
-            $targetColumn = $targetColumn->slice(0, $validated['newIndex'])
-                ->push($feed)
-                ->concat($targetColumn->slice($validated['newIndex']));
-            $feedsByColumn[$validated['toColumn']] = $targetColumn;
-
-            $position = 1;
-            for ($i = 0; $i <= 2; $i++) {
-                foreach ($feedsByColumn[$i] as $feedItem) {
-                    if ($feedItem->position !== $position) {
-                        $feedItem->update(['position' => $position]);
-                    }
-                    $position++;
-                }
-            }
-
-            DB::commit();
+            app(FeedService::class)->reorder($feed, $validated['toColumn'], $validated['newIndex']);
 
             return response()->json([
                 'success' => true,
                 'message' => __('Feed position updated successfully'),
             ]);
         } catch (\Exception $e) {
-            DB::rollBack();
             Log::error(__('Error updating feed position').': '.$e->getMessage(), [
                 'exception' => $e,
                 'data' => $data,

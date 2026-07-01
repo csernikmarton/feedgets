@@ -102,6 +102,14 @@
             <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                 <div class="max-w-xl">
                     <section>
+                        <livewire:settings.api-tokens />
+                    </section>
+                </div>
+            </div>
+
+            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+                <div class="max-w-xl">
+                    <section>
                         <livewire:settings.delete-user-form />
                     </section>
                 </div>
