@@ -9,6 +9,8 @@ use Illuminate\Http\Exceptions\MalformedUrlException;
 use Illuminate\Http\Request as HttpRequest;
 use Symfony\Component\ErrorHandler\ErrorRenderer\HtmlErrorRenderer;
 use Symfony\Component\ErrorHandler\Exception\FlattenException;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -23,6 +25,18 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->shouldRenderJsonWhen(function (HttpRequest $request, Throwable $e) {
             return $request->is('api/*') || $request->expectsJson();
+        });
+
+        $exceptions->render(function (HttpExceptionInterface $exception, HttpRequest $request) {
+            if (! ($request->is('api/*') || $request->expectsJson()) || $exception->getMessage() !== '') {
+                return null;
+            }
+
+            $status = $exception->getStatusCode();
+
+            return response()->json([
+                'message' => Response::$statusTexts[$status] ?? 'Error',
+            ], $status, $exception->getHeaders());
         });
 
         $exceptions->renderable(function (Exception $exception) {
