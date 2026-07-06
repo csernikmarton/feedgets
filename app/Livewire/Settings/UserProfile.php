@@ -13,6 +13,25 @@ use Livewire\Component;
 #[Title('Profile')]
 class UserProfile extends Component
 {
+    /**
+     * Available color schemes: key => [label, swatch color].
+     * `default` keeps the current blue theme (no CSS override).
+     *
+     * @var array<string, array{label: string, swatch: string}>
+     */
+    public const SCHEMES = [
+        'default' => ['label' => 'Blue (default)', 'swatch' => '#2563eb'],
+        'indigo' => ['label' => 'Indigo', 'swatch' => '#4f46e5'],
+        'violet' => ['label' => 'Violet', 'swatch' => '#7c3aed'],
+        'fuchsia' => ['label' => 'Fuchsia', 'swatch' => '#c026d3'],
+        'rose' => ['label' => 'Rose', 'swatch' => '#e11d48'],
+        'orange' => ['label' => 'Orange', 'swatch' => '#ea580c'],
+        'amber' => ['label' => 'Amber', 'swatch' => '#d97706'],
+        'emerald' => ['label' => 'Emerald', 'swatch' => '#059669'],
+        'teal' => ['label' => 'Teal', 'swatch' => '#0d9488'],
+        'cyan' => ['label' => 'Cyan', 'swatch' => '#0891b2'],
+    ];
+
     public $name;
 
     public $email;
@@ -23,10 +42,13 @@ class UserProfile extends Component
 
     public $password_confirmation;
 
+    public $colorScheme;
+
     public function mount()
     {
         $this->name = Auth::user()->name;
         $this->email = Auth::user()->email;
+        $this->colorScheme = Auth::user()->color_scheme ?? 'default';
     }
 
     public function render()
@@ -75,6 +97,21 @@ class UserProfile extends Component
 
         session()->flash('password_message', __('Password updated successfully.'));
         $this->dispatch('password-saved');
+    }
+
+    public function updateColorScheme(string $scheme)
+    {
+        if (! array_key_exists($scheme, self::SCHEMES)) {
+            return;
+        }
+
+        $user = User::find(Auth::id());
+        $user->color_scheme = $scheme === 'default' ? null : $scheme;
+        $user->save();
+
+        $this->colorScheme = $scheme;
+
+        session()->flash('color_scheme_message', __('Color scheme updated.'));
     }
 
     public function resendVerificationEmail()

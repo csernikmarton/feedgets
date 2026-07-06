@@ -1,0 +1,173 @@
+/*
+ * Custom color schemes.
+ *
+ * The app hardcodes `blue-*` (buttons) and `indigo-*` (rings/borders) accent
+ * classes across many templates. Tailwind v4 compiles those to
+ * `var(--color-blue-*)` / `var(--color-indigo-*)`, so remapping those custom
+ * properties under a `[data-color-scheme]` scope recolors every accent at once
+ * with no template changes. All schemes unify both scales to a single hue.
+ *
+ * `default` intentionally has no block — it renders the stock blue/indigo look.
+ * Values are literal Tailwind palette hex (not var() refs) so they survive
+ * theme-variable tree-shaking.
+ */
+
+[data-color-scheme="indigo"] {
+    --color-blue-50:  #eef2ff; --color-indigo-50:  #eef2ff;
+    --color-blue-100: #e0e7ff; --color-indigo-100: #e0e7ff;
+    --color-blue-200: #c7d2fe; --color-indigo-200: #c7d2fe;
+    --color-blue-300: #a5b4fc; --color-indigo-300: #a5b4fc;
+    --color-blue-400: #818cf8; --color-indigo-400: #818cf8;
+    --color-blue-500: #6366f1; --color-indigo-500: #6366f1;
+    --color-blue-600: #4f46e5; --color-indigo-600: #4f46e5;
+    --color-blue-700: #4338ca; --color-indigo-700: #4338ca;
+    --color-blue-800: #3730a3; --color-indigo-800: #3730a3;
+    --color-blue-900: #312e81; --color-indigo-900: #312e81;
+    --color-blue-950: #1e1b4b; --color-indigo-950: #1e1b4b;
+}
+
+[data-color-scheme="violet"] {
+    --color-blue-50:  #f5f3ff; --color-indigo-50:  #f5f3ff;
+    --color-blue-100: #ede9fe; --color-indigo-100: #ede9fe;
+    --color-blue-200: #ddd6fe; --color-indigo-200: #ddd6fe;
+    --color-blue-300: #c4b5fd; --color-indigo-300: #c4b5fd;
+    --color-blue-400: #a78bfa; --color-indigo-400: #a78bfa;
+    --color-blue-500: #8b5cf6; --color-indigo-500: #8b5cf6;
+    --color-blue-600: #7c3aed; --color-indigo-600: #7c3aed;
+    --color-blue-700: #6d28d9; --color-indigo-700: #6d28d9;
+    --color-blue-800: #5b21b6; --color-indigo-800: #5b21b6;
+    --color-blue-900: #4c1d95; --color-indigo-900: #4c1d95;
+    --color-blue-950: #2e1065; --color-indigo-950: #2e1065;
+}
+
+[data-color-scheme="fuchsia"] {
+    --color-blue-50:  #fdf4ff; --color-indigo-50:  #fdf4ff;
+    --color-blue-100: #fae8ff; --color-indigo-100: #fae8ff;
+    --color-blue-200: #f5d0fe; --color-indigo-200: #f5d0fe;
+    --color-blue-300: #f0abfc; --color-indigo-300: #f0abfc;
+    --color-blue-400: #e879f9; --color-indigo-400: #e879f9;
+    --color-blue-500: #d946ef; --color-indigo-500: #d946ef;
+    --color-blue-600: #c026d3; --color-indigo-600: #c026d3;
+    --color-blue-700: #a21caf; --color-indigo-700: #a21caf;
+    --color-blue-800: #86198f; --color-indigo-800: #86198f;
+    --color-blue-900: #701a75; --color-indigo-900: #701a75;
+    --color-blue-950: #4a044e; --color-indigo-950: #4a044e;
+}
+
+[data-color-scheme="rose"] {
+    --color-blue-50:  #fff1f2; --color-indigo-50:  #fff1f2;
+    --color-blue-100: #ffe4e6; --color-indigo-100: #ffe4e6;
+    --color-blue-200: #fecdd3; --color-indigo-200: #fecdd3;
+    --color-blue-300: #fda4af; --color-indigo-300: #fda4af;
+    --color-blue-400: #fb7185; --color-indigo-400: #fb7185;
+    --color-blue-500: #f43f5e; --color-indigo-500: #f43f5e;
+    --color-blue-600: #e11d48; --color-indigo-600: #e11d48;
+    --color-blue-700: #be123c; --color-indigo-700: #be123c;
+    --color-blue-800: #9f1239; --color-indigo-800: #9f1239;
+    --color-blue-900: #881337; --color-indigo-900: #881337;
+    --color-blue-950: #4c0519; --color-indigo-950: #4c0519;
+}
+
+[data-color-scheme="orange"] {
+    --color-blue-50:  #fff7ed; --color-indigo-50:  #fff7ed;
+    --color-blue-100: #ffedd5; --color-indigo-100: #ffedd5;
+    --color-blue-200: #fed7aa; --color-indigo-200: #fed7aa;
+    --color-blue-300: #fdba74; --color-indigo-300: #fdba74;
+    --color-blue-400: #fb923c; --color-indigo-400: #fb923c;
+    --color-blue-500: #f97316; --color-indigo-500: #f97316;
+    --color-blue-600: #ea580c; --color-indigo-600: #ea580c;
+    --color-blue-700: #c2410c; --color-indigo-700: #c2410c;
+    --color-blue-800: #9a3412; --color-indigo-800: #9a3412;
+    --color-blue-900: #7c2d12; --color-indigo-900: #7c2d12;
+    --color-blue-950: #431407; --color-indigo-950: #431407;
+}
+
+[data-color-scheme="amber"] {
+    --color-blue-50:  #fffbeb; --color-indigo-50:  #fffbeb;
+    --color-blue-100: #fef3c7; --color-indigo-100: #fef3c7;
+    --color-blue-200: #fde68a; --color-indigo-200: #fde68a;
+    --color-blue-300: #fcd34d; --color-indigo-300: #fcd34d;
+    --color-blue-400: #fbbf24; --color-indigo-400: #fbbf24;
+    --color-blue-500: #f59e0b; --color-indigo-500: #f59e0b;
+    --color-blue-600: #d97706; --color-indigo-600: #d97706;
+    --color-blue-700: #b45309; --color-indigo-700: #b45309;
+    --color-blue-800: #92400e; --color-indigo-800: #92400e;
+    --color-blue-900: #78350f; --color-indigo-900: #78350f;
+    --color-blue-950: #451a03; --color-indigo-950: #451a03;
+}
+
+[data-color-scheme="emerald"] {
+    --color-blue-50:  #ecfdf5; --color-indigo-50:  #ecfdf5;
+    --color-blue-100: #d1fae5; --color-indigo-100: #d1fae5;
+    --color-blue-200: #a7f3d0; --color-indigo-200: #a7f3d0;
+    --color-blue-300: #6ee7b7; --color-indigo-300: #6ee7b7;
+    --color-blue-400: #34d399; --color-indigo-400: #34d399;
+    --color-blue-500: #10b981; --color-indigo-500: #10b981;
+    --color-blue-600: #059669; --color-indigo-600: #059669;
+    --color-blue-700: #047857; --color-indigo-700: #047857;
+    --color-blue-800: #065f46; --color-indigo-800: #065f46;
+    --color-blue-900: #064e3b; --color-indigo-900: #064e3b;
+    --color-blue-950: #022c22; --color-indigo-950: #022c22;
+}
+
+[data-color-scheme="teal"] {
+    --color-blue-50:  #f0fdfa; --color-indigo-50:  #f0fdfa;
+    --color-blue-100: #ccfbf1; --color-indigo-100: #ccfbf1;
+    --color-blue-200: #99f6e4; --color-indigo-200: #99f6e4;
+    --color-blue-300: #5eead4; --color-indigo-300: #5eead4;
+    --color-blue-400: #2dd4bf; --color-indigo-400: #2dd4bf;
+    --color-blue-500: #14b8a6; --color-indigo-500: #14b8a6;
+    --color-blue-600: #0d9488; --color-indigo-600: #0d9488;
+    --color-blue-700: #0f766e; --color-indigo-700: #0f766e;
+    --color-blue-800: #115e59; --color-indigo-800: #115e59;
+    --color-blue-900: #134e4a; --color-indigo-900: #134e4a;
+    --color-blue-950: #042f2e; --color-indigo-950: #042f2e;
+}
+
+[data-color-scheme="cyan"] {
+    --color-blue-50:  #ecfeff; --color-indigo-50:  #ecfeff;
+    --color-blue-100: #cffafe; --color-indigo-100: #cffafe;
+    --color-blue-200: #a5f3fc; --color-indigo-200: #a5f3fc;
+    --color-blue-300: #67e8f9; --color-indigo-300: #67e8f9;
+    --color-blue-400: #22d3ee; --color-indigo-400: #22d3ee;
+    --color-blue-500: #06b6d4; --color-indigo-500: #06b6d4;
+    --color-blue-600: #0891b2; --color-indigo-600: #0891b2;
+    --color-blue-700: #0e7490; --color-indigo-700: #0e7490;
+    --color-blue-800: #155e75; --color-indigo-800: #155e75;
+    --color-blue-900: #164e63; --color-indigo-900: #164e63;
+    --color-blue-950: #083344; --color-indigo-950: #083344;
+}
+
+/*
+ * Neutral surfaces. The app's page/box/border backgrounds use Tailwind's `gray`
+ * scale, which is cool (blue-tinted) — so without this they stay blue-ish under
+ * every scheme. Each scheme sets a tint hue; the shared block below mixes it into
+ * the stock gray shades so surfaces pick up the accent. `default` keeps 0% tint,
+ * i.e. the original cool gray.
+ */
+:root { --scheme-tint: #6b7280; --scheme-tint-amount: 0%; --scheme-tint-amount-soft: 0%; }
+
+[data-color-scheme="indigo"]  { --scheme-tint: #6366f1; --scheme-tint-amount: 14%; --scheme-tint-amount-soft: 7%; }
+[data-color-scheme="violet"]  { --scheme-tint: #8b5cf6; --scheme-tint-amount: 14%; --scheme-tint-amount-soft: 7%; }
+[data-color-scheme="fuchsia"] { --scheme-tint: #d946ef; --scheme-tint-amount: 14%; --scheme-tint-amount-soft: 7%; }
+[data-color-scheme="rose"]    { --scheme-tint: #f43f5e; --scheme-tint-amount: 14%; --scheme-tint-amount-soft: 7%; }
+[data-color-scheme="orange"]  { --scheme-tint: #f97316; --scheme-tint-amount: 14%; --scheme-tint-amount-soft: 7%; }
+[data-color-scheme="amber"]   { --scheme-tint: #f59e0b; --scheme-tint-amount: 14%; --scheme-tint-amount-soft: 7%; }
+[data-color-scheme="emerald"] { --scheme-tint: #10b981; --scheme-tint-amount: 14%; --scheme-tint-amount-soft: 7%; }
+[data-color-scheme="teal"]    { --scheme-tint: #14b8a6; --scheme-tint-amount: 14%; --scheme-tint-amount-soft: 7%; }
+[data-color-scheme="cyan"]    { --scheme-tint: #06b6d4; --scheme-tint-amount: 14%; --scheme-tint-amount-soft: 7%; }
+
+:root {
+    --color-white:    color-mix(in oklab, #ffffff, var(--scheme-tint) var(--scheme-tint-amount-soft));
+    --color-gray-50:  color-mix(in oklab, #f9fafb, var(--scheme-tint) var(--scheme-tint-amount));
+    --color-gray-100: color-mix(in oklab, #f3f4f6, var(--scheme-tint) var(--scheme-tint-amount));
+    --color-gray-200: color-mix(in oklab, #e5e7eb, var(--scheme-tint) var(--scheme-tint-amount));
+    --color-gray-300: color-mix(in oklab, #d1d5db, var(--scheme-tint) var(--scheme-tint-amount));
+    --color-gray-400: color-mix(in oklab, #9ca3af, var(--scheme-tint) var(--scheme-tint-amount));
+    --color-gray-500: color-mix(in oklab, #6b7280, var(--scheme-tint) var(--scheme-tint-amount));
+    --color-gray-600: color-mix(in oklab, #4b5563, var(--scheme-tint) var(--scheme-tint-amount));
+    --color-gray-700: color-mix(in oklab, #374151, var(--scheme-tint) var(--scheme-tint-amount));
+    --color-gray-800: color-mix(in oklab, #1f2937, var(--scheme-tint) var(--scheme-tint-amount));
+    --color-gray-900: color-mix(in oklab, #111827, var(--scheme-tint) var(--scheme-tint-amount));
+    --color-gray-950: color-mix(in oklab, #030712, var(--scheme-tint) var(--scheme-tint-amount));
+}

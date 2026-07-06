@@ -48,6 +48,44 @@ test('user cannot update profile with invalid data', function () {
         ->assertHasErrors(['name', 'email']);
 });
 
+test('component mounts with default color scheme when none saved', function () {
+    Livewire::test(UserProfile::class)
+        ->assertSet('colorScheme', 'default');
+});
+
+test('user can update color scheme', function () {
+    Livewire::test(UserProfile::class)
+        ->call('updateColorScheme', 'emerald')
+        ->assertSet('colorScheme', 'emerald');
+
+    $this->user->refresh();
+
+    expect($this->user->color_scheme)->toBe('emerald');
+});
+
+test('selecting default clears the stored color scheme', function () {
+    $this->user->update(['color_scheme' => 'emerald']);
+
+    Livewire::test(UserProfile::class)
+        ->call('updateColorScheme', 'default')
+        ->assertSet('colorScheme', 'default');
+
+    $this->user->refresh();
+
+    expect($this->user->color_scheme)->toBeNull();
+});
+
+test('invalid color scheme is rejected and does not change stored value', function () {
+    $this->user->update(['color_scheme' => 'emerald']);
+
+    Livewire::test(UserProfile::class)
+        ->call('updateColorScheme', 'not-a-scheme');
+
+    $this->user->refresh();
+
+    expect($this->user->color_scheme)->toBe('emerald');
+});
+
 test('user can update password', function () {
     $newPassword = 'new-password';
 
@@ -105,6 +143,8 @@ test('user can resend verification email', function () {
     $user->shouldReceive('getAttribute')->with('email_verified_at')->andReturn(null);
     // The profile page renders the nested api-tokens component.
     $user->shouldReceive('tokens->latest->get')->andReturn(collect());
+    // The base layout reads the color scheme off the authenticated user.
+    $user->shouldReceive('offsetExists')->with('color_scheme')->andReturn(false);
 
     Auth::shouldReceive('user')->andReturn($user);
 
@@ -128,6 +168,8 @@ test('verified user cannot resend verification email', function () {
     $user->shouldReceive('getAttribute')->with('email_verified_at')->andReturn($this->user->email_verified_at);
     // The profile page renders the nested api-tokens component.
     $user->shouldReceive('tokens->latest->get')->andReturn(collect());
+    // The base layout reads the color scheme off the authenticated user.
+    $user->shouldReceive('offsetExists')->with('color_scheme')->andReturn(false);
 
     Auth::shouldReceive('user')->andReturn($user);
 

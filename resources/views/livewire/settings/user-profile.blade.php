@@ -102,6 +102,44 @@
             <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                 <div class="max-w-xl">
                     <section>
+                        <header>
+                            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                                {{ __('Color Scheme') }}
+                            </h2>
+
+                            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                                {{ __('Choose the accent color used across the app. Light and dark mode still apply.') }}
+                            </p>
+                        </header>
+
+                        <div class="mt-6 grid grid-cols-2 sm:grid-cols-5 gap-4">
+                            @foreach (\App\Livewire\Settings\UserProfile::SCHEMES as $key => $scheme)
+                                <button
+                                    type="button"
+                                    wire:click="updateColorScheme('{{ $key }}')"
+                                    x-on:click="document.documentElement.dataset.colorScheme = '{{ $key }}'"
+                                    @class([
+                                        'flex flex-col items-center gap-2 rounded-lg border p-3 text-center transition',
+                                        'border-gray-900 dark:border-gray-100 ring-2 ring-gray-900 dark:ring-gray-100' => $colorScheme === $key,
+                                        'border-gray-200 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-500' => $colorScheme !== $key,
+                                    ])
+                                >
+                                    <span class="h-8 w-8 rounded-full" style="background-color: {{ $scheme['swatch'] }}"></span>
+                                    <span class="text-xs text-gray-700 dark:text-gray-300">{{ __($scheme['label']) }}</span>
+                                </button>
+                            @endforeach
+                        </div>
+
+                        @if (session('color_scheme_message'))
+                            <p class="mt-4 text-sm text-gray-600 dark:text-gray-400">{{ session('color_scheme_message') }}</p>
+                        @endif
+                    </section>
+                </div>
+            </div>
+
+            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+                <div class="max-w-xl">
+                    <section>
                         <livewire:settings.api-tokens />
                     </section>
                 </div>
