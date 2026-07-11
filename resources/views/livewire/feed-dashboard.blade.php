@@ -12,9 +12,11 @@
                     </svg>
                     {{ __('Drag widget headers to rearrange') }}
                 </span>
-                <x-primary-button type="link" href="{{ route('feeds.manage') }}">
-                    {{ __('Manage Feeds') }}
-                </x-primary-button>
+                <span class="hidden sm:inline-flex">
+                    <x-primary-button type="link" href="{{ route('feeds.manage') }}">
+                        {{ __('Manage Feeds') }}
+                    </x-primary-button>
+                </span>
             </div>
         </div>
     </x-slot>
@@ -24,7 +26,7 @@
     <div class="py-6"
         x-data="{}"
         x-init="$nextTick(() => { $wire.on('refresh', () => location.reload()); })">
-        <div class="mx-auto sm:px-6 lg:px-8">
+        <div class="mx-auto px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="dashboard-grid">
                 @foreach($columns as $columnIndex => $columnFeeds)
                     <div class="widget-column min-h-[100px] bg-gray-50/30 dark:bg-gray-900/10 rounded-lg" data-column="{{ $columnIndex }}">
