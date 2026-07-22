@@ -27,7 +27,7 @@
         x-data="{}"
         x-init="$nextTick(() => { $wire.on('refresh', () => location.reload()); })">
         <div class="mx-auto px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="dashboard-grid">
+            <div class="grid grid-cols-1 md:grid-cols-3 md:gap-6" id="dashboard-grid">
                 @foreach($columns as $columnIndex => $columnFeeds)
                     <div class="widget-column min-h-[100px] bg-gray-50/30 dark:bg-gray-900/10 rounded-lg" data-column="{{ $columnIndex }}">
                         @foreach($columnFeeds as $feed)
