@@ -18,6 +18,8 @@ pest()->extend(TestCase::class)
     ->use(RefreshDatabase::class)
     ->in('Unit', 'Feature');
 
+pest()->tia()->locally();
+
 /*
 |--------------------------------------------------------------------------
 | Expectations
