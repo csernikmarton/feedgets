@@ -7,6 +7,12 @@
 
 @script
 <script>
+    // The package registers these on livewire:initialized, which never fires again after a
+    // wire:navigate visit, so the callback stays undefined or keeps pointing at the previous
+    // page's component. This block re-registers them on every component boot.
+    window.captchaCallback = (token) => $wire.set('turnstileResponse', token);
+    window.captchaExpiredCallback = () => turnstile.reset();
+
     refreshTurnstile();
 
     function refreshTurnstile() {
