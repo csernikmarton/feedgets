@@ -11,7 +11,7 @@ beforeEach(function () {
 });
 
 test('feed dashboard can be rendered', function () {
-    $response = $this->get('/');
+    $response = $this->get(route('dashboard'));
     $response->assertStatus(200);
 });
 

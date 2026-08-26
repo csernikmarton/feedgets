@@ -3,7 +3,7 @@
         <div class="flex justify-between h-16">
             <div class="flex">
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
+                    <a href="{{ auth()->check() ? route('dashboard') : route('home') }}">
                         <x-application-logo-horizontal class="block h-9 w-auto" />
                     </a>
                 </div>
@@ -120,7 +120,7 @@
                     </form>
                 </div>
             @else
-                <div class="px-4 py-2 space-y-1">
+                <div class="space-y-1">
                     <x-responsive-nav-link :href="route('login')">
                         {{ __('Log in') }}
                     </x-responsive-nav-link>

@@ -8,11 +8,15 @@ use App\Livewire\Settings\UserProfile;
 use Illuminate\Support\Facades\Route;
 use Laravel\Nightwatch\Http\Middleware\Sample;
 
+Route::get('/', fn () => auth()->check()
+    ? redirect()->route('dashboard')
+    : view('welcome'))->name('home');
+
 Route::get('faq', Faq::class)->name('faq');
 Route::get('contact', Contact::class)->name('contact');
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/', FeedDashboard::class)
+    Route::get('dashboard', FeedDashboard::class)
         ->middleware(['verified'])
         ->name('dashboard');
 

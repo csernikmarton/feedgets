@@ -52,10 +52,25 @@
 
     <title>{{ isset($title) ? $title . ' – ' . config('app.name') : config('app.name') }}</title>
 
+    @php
+        $metaTitle = isset($title) ? $title.' – '.config('app.name') : config('app.name');
+        $metaDescription = $description ?? __('An open-source RSS dashboard: organise every feed you follow into a customisable board of widgets and read it all in one clean, distraction-free page.');
+    @endphp
+
+    <meta name="description" content="{{ $metaDescription }}">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="{{ config('app.name') }}">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="{{ $metaTitle }}">
+    <meta property="og:description" content="{{ $metaDescription }}">
+    <meta property="og:image" content="{{ asset('images/screenshot-light.jpg') }}">
+    <meta name="twitter:card" content="summary_large_image">
+
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @livewireStyles
     @if(request()->routeIs(['login', 'register', 'password.request', 'password.reset', 'contact']))
         <x-turnstile.scripts />
     @endif
@@ -99,5 +114,7 @@
             </footer>
         </div>
     @endif
+
+    @livewireScripts
 </body>
 </html>
