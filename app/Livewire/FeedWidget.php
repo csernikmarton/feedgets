@@ -204,7 +204,9 @@ class FeedWidget extends Component
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
+            $this->dispatch('position-update-failed', errors: $validator->errors()->toArray());
+
+            return;
         }
 
         $validated = $validator->validated();
@@ -212,26 +214,23 @@ class FeedWidget extends Component
         $feed = Feed::findOrFail($validated['feedId']);
 
         if ($feed->user_id !== Auth::id()) {
-            return redirect()->route('dashboard')->with('error', 'Unauthorized action');
+            session()->flash('error', 'Unauthorized action');
+            $this->redirectRoute('dashboard');
+
+            return;
         }
 
         try {
             app(FeedService::class)->reorder($feed, $validated['toColumn'], $validated['newIndex']);
 
-            return response()->json([
-                'success' => true,
-                'message' => __('Feed position updated successfully'),
-            ]);
+            $this->dispatch('position-updated');
         } catch (\Exception $e) {
             Log::error(__('Error updating feed position').': '.$e->getMessage(), [
                 'exception' => $e,
                 'data' => $data,
             ]);
 
-            return response()->json([
-                'success' => false,
-                'message' => __('Error updating feed position'),
-            ], 500);
+            $this->dispatch('position-update-failed', message: __('Error updating feed position'));
         }
     }
 }

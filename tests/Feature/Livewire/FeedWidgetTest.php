@@ -222,7 +222,8 @@ test('can update feed position within the same column', function () {
 
     // Test moving feed3 to position 1 in the same column
     Livewire::test(FeedWidget::class, ['feed' => $feed3])
-        ->call('updatePosition', $feed3->uuid, 0, 0, 0);
+        ->call('updatePosition', $feed3->uuid, 0, 0, 0)
+        ->assertDispatched('position-updated');
 
     // Refresh models from database
     $feed1->refresh();
@@ -272,7 +273,8 @@ test('validates input data for updatePosition', function () {
 
     // Test with invalid column value
     $response = Livewire::test(FeedWidget::class, ['feed' => $feed])
-        ->call('updatePosition', $feed->uuid, 0, 5, 0);
+        ->call('updatePosition', $feed->uuid, 0, 5, 0)
+        ->assertDispatched('position-update-failed');
 
     // Feed should remain in the original position
     $feed->refresh();
@@ -295,7 +297,8 @@ test('prevents unauthorized feed position updates', function () {
 
     // Attempt to update the feed position
     Livewire::test(FeedWidget::class, ['feed' => $feed])
-        ->call('updatePosition', $feed->uuid, 0, 1, 0);
+        ->call('updatePosition', $feed->uuid, 0, 1, 0)
+        ->assertRedirect(route('dashboard'));
 
     // Feed should remain in the original position
     $feed->refresh();
