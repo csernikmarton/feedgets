@@ -6,8 +6,6 @@ use App\Models\Article;
 use App\Models\Feed;
 use App\Services\FeedService;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -178,53 +176,5 @@ class FeedWidget extends Component
             ->skip(($this->page - 1) * $this->perPage)
             ->take($this->perPage)
             ->get();
-    }
-
-    #[On('update-position')]
-    public function updatePosition($feedId, $fromColumn, $toColumn, $newIndex)
-    {
-        $data = [
-            'feedId' => (string) $feedId,
-            'fromColumn' => (int) $fromColumn,
-            'toColumn' => (int) $toColumn,
-            'newIndex' => (int) $newIndex,
-        ];
-
-        $validator = validator($data, [
-            'feedId' => 'required|uuid|exists:feeds,uuid',
-            'fromColumn' => 'required|integer|min:0|max:2',
-            'toColumn' => 'required|integer|min:0|max:2',
-            'newIndex' => 'required|integer|min:0',
-        ]);
-
-        if ($validator->fails()) {
-            $this->dispatch('position-update-failed', errors: $validator->errors()->toArray());
-
-            return;
-        }
-
-        $validated = $validator->validated();
-
-        $feed = Feed::findOrFail($validated['feedId']);
-
-        if ($feed->user_id !== Auth::id()) {
-            session()->flash('error', 'Unauthorized action');
-            $this->redirectRoute('dashboard');
-
-            return;
-        }
-
-        try {
-            app(FeedService::class)->reorder($feed, $validated['toColumn'], $validated['newIndex']);
-
-            $this->dispatch('position-updated');
-        } catch (\Exception $e) {
-            Log::error(__('Error updating feed position').': '.$e->getMessage(), [
-                'exception' => $e,
-                'data' => $data,
-            ]);
-
-            $this->dispatch('position-update-failed', message: __('Error updating feed position'));
-        }
     }
 }
