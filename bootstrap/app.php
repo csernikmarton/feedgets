@@ -9,6 +9,7 @@ use Illuminate\Http\Exceptions\MalformedUrlException;
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
+use Livewire\Features\SupportFileUploads\MissingFileUploadsTraitException;
 use Symfony\Component\ErrorHandler\ErrorRenderer\HtmlErrorRenderer;
 use Symfony\Component\ErrorHandler\Exception\FlattenException;
 use Symfony\Component\HttpFoundation\Response;
@@ -58,7 +59,11 @@ return Application::configure(basePath: dirname(__DIR__))
                 return;
             }
 
-            if (method_exists($exception, 'getStatusCode') && in_array($exception->getStatusCode(), [403, 404, 405, 419])) {
+            if ($exception instanceof MissingFileUploadsTraitException) {
+                return;
+            }
+
+            if (method_exists($exception, 'getStatusCode') && in_array($exception->getStatusCode(), [403, 404, 405, 419, 429])) {
                 return;
             }
 
