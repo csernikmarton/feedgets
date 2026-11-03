@@ -173,21 +173,18 @@
                                     newIndex: parseInt(evt.newIndex)
                                 };
 
+                                const offUpdated = Livewire.on('position-updated', () => settle());
+                                const offFailed = Livewire.on('position-update-failed', () => settle());
+
+                                function settle() {
+                                    offUpdated();
+                                    offFailed();
+                                    if (widgetEl) {
+                                        widgetEl.classList.remove('opacity-70', 'transition-opacity');
+                                    }
+                                }
+
                                 Livewire.dispatch('update-position', data);
-
-                                Livewire.on('position-updated', (data) => {
-                                    // console.log('Position update successful', data);
-                                    if (widgetEl) {
-                                        widgetEl.classList.remove('opacity-70', 'transition-opacity');
-                                    }
-                                });
-
-                                Livewire.on('position-update-failed', (data) => {
-                                    // console.error('Error updating position:', data);
-                                    if (widgetEl) {
-                                        widgetEl.classList.remove('opacity-70', 'transition-opacity');
-                                    }
-                                });
                             }
                         });
                     
