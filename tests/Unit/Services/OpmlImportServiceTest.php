@@ -143,26 +143,23 @@ XML;
         ->and($result['count'])->toBe(0);
 });
 
-test('import handles XML that fails to load but does not throw exception', function () {
+test('import reports malformed XML as invalid format', function () {
     $user = User::factory()->create();
     $service = new OpmlImportService;
 
-    // This is a special case where simplexml_load_string() returns false but doesn't throw an exception
-    // Using a string that looks like XML but has issues that cause simplexml_load_string to return false
     $problematicXml = '<?xml version="1.0" encoding="UTF-8"?><opml><invalid>';
 
     $result = $service->import($problematicXml, $user->id);
 
     expect($result['success'])->toBeFalse()
         ->and($result['count'])->toBe(0)
-        ->and($result['message'])->toContain('Error processing OPML file:');
+        ->and($result['message'])->toBe('Invalid OPML file format.');
 });
 
 test('import handles empty XML string', function () {
     $user = User::factory()->create();
     $service = new OpmlImportService;
 
-    // An empty string will cause simplexml_load_string() to return false without throwing an exception
     $emptyXml = '';
 
     $result = $service->import($emptyXml, $user->id);

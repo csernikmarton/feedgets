@@ -75,7 +75,11 @@ class OpmlImportService
     {
         libxml_disable_entity_loader(true);
 
+        $previousUseErrors = libxml_use_internal_errors(true);
         $xml = simplexml_load_string($filePath);
+        libxml_clear_errors();
+        libxml_use_internal_errors($previousUseErrors);
+
         if (! $xml) {
             return false;
         }
