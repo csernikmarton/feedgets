@@ -75,9 +75,6 @@ class FeedWidget extends Component
             $article->markAsRead();
             $this->decrementUnreadCount();
 
-            // Notify parent component, ensure the event is processed
-            // after the current request completes
-            $this->dispatch('article-read', ['feed_uuid' => $article->feed_uuid]);
             $this->dispatch('decrement-total-unread-count');
         }
     }
@@ -90,8 +87,6 @@ class FeedWidget extends Component
             app(FeedService::class)->markAllAsRead($this->feed, $publishedAt);
 
             $this->refresh();
-
-            $this->dispatch('refresh-complete');
         }
     }
 
@@ -123,7 +118,6 @@ class FeedWidget extends Component
         $this->dispatch('calculate-total-unread-count');
     }
 
-    #[On('refresh-complete')]
     public function handleRefreshComplete()
     {
         $this->isRefreshing = false;

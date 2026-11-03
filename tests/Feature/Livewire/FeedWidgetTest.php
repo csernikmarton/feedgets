@@ -67,7 +67,7 @@ test('feed widget can mark an article as read', function () {
         ->assertSet('unreadCount', 1)
         ->call('markArticleAsRead', $article->uuid)
         ->assertSet('unreadCount', 0)
-        ->assertDispatched('article-read')
+        ->assertNotDispatched('article-read')
         ->assertDispatched('decrement-total-unread-count');
 
     // Verify article is marked as read in the database
@@ -104,7 +104,7 @@ test('feed widget can mark all articles as read', function () {
         ->assertSet('unreadCount', 3)
         ->call('markAllAsRead', $now)
         ->assertSet('isRefreshing', true)
-        ->assertDispatched('refresh-complete');
+        ->assertNotDispatched('refresh-complete');
 
     // Verify all articles are marked as read in the database
     $this->assertDatabaseHas('articles', [
@@ -170,11 +170,11 @@ test('feed widget can refresh', function () {
         ->assertSet('totalArticlesLoaded', 8);
 });
 
-test('feed widget handles refresh complete event', function () {
+test('feed widget clears refreshing state on refresh complete', function () {
     // Test the component
     Livewire::test(FeedWidget::class, ['feed' => $this->feed])
         ->set('isRefreshing', true)
-        ->dispatch('refresh-complete')
+        ->call('handleRefreshComplete')
         ->assertSet('isRefreshing', false);
 });
 
