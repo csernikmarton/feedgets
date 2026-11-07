@@ -2,30 +2,21 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full"
     data-color-scheme="{{ auth()->user()?->color_scheme ?? 'default' }}"
     x-data="{
-        theme: localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'),
+        theme: localStorage.getItem('theme') || 'system',
         initTheme() {
-            function setTheme(value) {
-                if (value === undefined || value === 'dark') {
-                    document.documentElement.classList.add('dark');
-                } else {
-                    document.documentElement.classList.remove('dark');
-                }
-            }
+            const media = window.matchMedia('(prefers-color-scheme: dark)');
+            const apply = () => {
+                const dark = this.theme === 'dark' || (this.theme === 'system' && media.matches);
+                document.documentElement.classList.toggle('dark', dark);
+            };
 
             this.$watch('theme', value => {
                 localStorage.setItem('theme', value);
-                setTheme(value);
+                apply();
             });
 
-            document.addEventListener('livewire:navigated', () => {
-                setTheme(this.theme);
-            });
-
-            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-                if (!localStorage.getItem('theme')) {
-                    this.theme = e.matches ? 'dark' : 'light';
-                }
-            });
+            document.addEventListener('livewire:navigated', apply);
+            media.addEventListener('change', apply);
         }
     }"
     x-init="initTheme()"
@@ -36,7 +27,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <script>
-        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        const storedTheme = localStorage.getItem('theme');
+        if (storedTheme === 'dark' || (storedTheme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
         } else {
             document.documentElement.classList.remove('dark');
